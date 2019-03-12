@@ -1,0 +1,8 @@
+*Button.foreground: red
+*Button.width:20
+*Label.foreground: blue
+*labelBonjour.text: Salut tout le monde !
+*labelBonjour.foreground: green
+*Label.background: light yellow
+*Label.relief: raised
+

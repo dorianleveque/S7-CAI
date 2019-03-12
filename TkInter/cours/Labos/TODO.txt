@@ -1,0 +1,83 @@
+Objectifs
+=========
+Realisation d'une IHM de simulation basee sur le modele MVC :
+
+ - d'oscilloscope (equation de mouvement vibratoire harmonique)
+
+En fin de TP, on adaptera cette IHM sur un autre modèle de données :
+ - d'evolution de population de proies-prédateurs (equations de Lotka-Volterra)
+
+Consignes
+=========
+
+1) Recuperer sur votre compte utilisateur dans un repertoire ($HOME/..../Dupond-Dupont-Oscilloscope),  si vos noms de binome sont Dupond et Dupont, les fichiers  : 
+     - controller.py
+     - file_open.py
+     - file_save.py
+     - generator.py
+     - lotka-Volterra.py  
+     - observer.py
+     - oscilloscope.py
+     - TODO.txt
+     - utils_timebase.py
+     - view.py
+ 
+qui se trouvent sous /home/TP/modules/sujets/CAI/TkInter/Labos.
+
+2) A la fin de CHAQUE seance de labo (17:30 au plus tard)
+
+     - creer l'archive Dupond-Dupont-Oscilloscope.tgz en lançant la commande :
+         tar zcvf Dupond-Dupont-Oscilloscope.tgz Dupond-Dupont-Oscilloscope/
+     - deposer cette archive de version : 
+          cp Dupond-Dupont-Oscilloscope.tgz /home/TP/TPrendu/nedelec/CAI/TkInter
+
+3) Avant de deposer l'archive, VERIFIER qu'elle n'est pas vide et qu'elle contient les fichiers de  l'application :
+     - controller.py
+     - generator.py    
+     - observer.py
+     - oscilloscope.py
+     - view.py
+
+   en lançant la commande : tar ztvf Dupond-Dupont-Oscilloscope.tgz
+
+Premiere version : paramétrage d'un signal
+==========================================
+Affichage et contrôle d'un signal dans l'application (oscilloscope.py) :
+
+ 1-1) creer une grille de visualisation parametrable en (n*m) carreaux (view.py)
+ 1-2) calculer la courbe d'elongation (generator.py)
+ 1-3) afficher la courbe d'elongation (oscilloscope.py)
+ 1-4) contrôler, par des sliders, le signal en frequence, amplitude, phase  (controller.py)
+ 1-5) réagencer automatiquement les composants graphiques en cas de retaillage de la fenetre 
+ 1-6) configurer l'IHM (couleur,texte, positionnement des sliders ...) par un fichier d'options 
+
+Deuxieme version : sauvegarde, sortie, menu d'aide
+==================================================
+Sauvegarde du parametrage d'un signal :
+
+ 2-1) menu pour sauvegarder, charger des parametres de courbes
+      a) dans un nom de fichier par defaut
+      b) avec une boite de dialogue
+ 2-2) ajouter au menu un item pour la sortie d'application :
+      a) sans avertir l'utilisateur
+      b) avec boite de dialogue
+
+Menu d'aide :
+
+ 2-2) Boite d'information avec (Nom,Prénom, e-mail)  des concepteurs de l'application
+ 
+Troisieme version : deux signaux
+================================
+ 3-1) création d'un deuxième signal (Y)
+ 3-2) gestion des signaux en mode (X,Y, X-Y)
+ 
+Version finale : plusieurs vues, animation de spot
+==================================================
+ 4-1) visualiser les courbes dans une fenetre et la courbe de lissajou dans une autre
+ 4-2) animation du spot correspondant a une elongation
+
+Reutilisation
+=============
+ 5-2) Reprendre la même IHM en l'adaptant au modele de Lotka-Volterra (lotka-Volterra.py)
+
+
