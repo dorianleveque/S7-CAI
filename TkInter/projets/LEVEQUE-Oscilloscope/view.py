@@ -52,6 +52,7 @@ class Screen(Observer):
         page = ttk.Frame(self.panelControl)
         self.panelControl.add(page, text='signal ' + name)
 
+        visible_checkbox = Checkbutton(page, text="Afficher")
         magnitude = Scale(page, length=250,orient="horizontal",
                          label="Amplitude", sliderlength=20,
                          showvalue=0,from_=0,to=5,
@@ -64,6 +65,7 @@ class Screen(Observer):
                          label="Phase", sliderlength=20,
                          showvalue=0,from_=0,to=360,
                          tickinterval=60, name="phaseScale")
+        visible_checkbox.pack(expand=1,fill="x")
         magnitude.pack(expand=1,fill="both",pady=6)
         frequency.pack(expand=1,fill="both",pady=6)
         phase.pack(expand=1,fill="both",pady=6)
