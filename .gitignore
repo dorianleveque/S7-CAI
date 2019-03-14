@@ -1,1 +1,4 @@
+# Ignorez tous les fichiers de compilation de python
+*.pyc
+__pycache__
 settings.json
