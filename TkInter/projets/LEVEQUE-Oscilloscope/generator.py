@@ -9,7 +9,7 @@ class Generator(Subject):
         self.generate_signal()
         self.name = name
         self.color = color
-        self.display = True
+        self.visible = True
 
     def generate_signal(self):
         del self.signal[0:]
@@ -20,14 +20,14 @@ class Generator(Subject):
             self.signal.append((t*1.0/samples,e))
         self.notify()
 
-    def isVisible():
-        return self.display
+    def is_visible(self):
+        return self.visible
 
-    def display():
-        self.display = True
+    def display(self):
+        self.visible = True
 
-    def hide():
-        self.display = False
+    def hide(self):
+        self.visible = False
 
     def set_color(self, color):
         self.color = color

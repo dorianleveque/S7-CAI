@@ -8,10 +8,9 @@ class Controller :
             pageControl['magnitude'].bind("<B1-Motion>",self.update_magnitude)
             pageControl['frequency'].bind("<B1-Motion>",self.update_frequency)
             pageControl['phase'].bind("<B1-Motion>",self.update_phase)
+            pageControl['visible'].bind("<Button-1>",self.update_visible)
 
         self.view.get_canvas().bind("<Configure>", self.resize)
-        self.view.get_checkbox_signalX().bind("<B1>", )
-        
         
         # initialisation de la vue par le modele
         self.update_controls()
@@ -23,7 +22,20 @@ class Controller :
             self.view.get_magnitude(index).set(model.get_magnitude())
             self.view.get_frequency(index).set(model.get_frequency())
             self.view.get_phase(index).set(model.get_phase())
+            if model.is_visible():
+                self.view.get_visible(index).select()
+            else:
+                self.view.get_visible(index).deselect()
 
+    def update_visible(self, event):
+        print("update visible")
+        pageIndex = self.view.get_panel_control_index()
+        model = self.parent.get_model(pageIndex)
+        if model.is_visible():
+            model.hide()
+        else:
+            model.display()
+        model.generate_signal()
 
     def update_magnitude(self,event):
         print("update_magnitude")

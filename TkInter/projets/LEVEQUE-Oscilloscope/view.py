@@ -59,17 +59,18 @@ class Screen(Observer):
                          tickinterval=1, name="magnitudeScale")
         frequency = Scale(page,length=250,orient="horizontal",
                          label="Frequency", sliderlength=20,
-                         showvalue=0,from_=0,to=100,
-                         tickinterval=10, name="frequencyScale")
+                         showvalue=0,from_=0,to=25,
+                         tickinterval=5, name="frequencyScale")
         phase = Scale(page,length=250,orient="horizontal",
                          label="Phase", sliderlength=20,
-                         showvalue=0,from_=0,to=360,
-                         tickinterval=60, name="phaseScale")
-        visible_checkbox.pack(expand=1,fill="x")
+                         showvalue=0,from_=0,to=20,
+                         tickinterval=5, name="phaseScale")
+        visible_checkbox.pack(fill="x",pady=6)
         magnitude.pack(expand=1,fill="both",pady=6)
         frequency.pack(expand=1,fill="both",pady=6)
         phase.pack(expand=1,fill="both",pady=6)
         self.panel_control_page.append({
+            'visible'  : visible_checkbox,
             'magnitude': magnitude,
             'frequency': frequency,
             'phase': phase
@@ -84,7 +85,7 @@ class Screen(Observer):
         else:
             signal = model.get_signal()
             self.plot_signal(model)
-        self.grid(6, 4)
+        self.grid(6, 8)
 
     def get_panel_control_index(self):
         return self.panelControl.index('current')
@@ -104,6 +105,9 @@ class Screen(Observer):
     def get_phase(self, index):
         return self.panel_control_page[index]['phase']
         
+    def get_visible(self, index):
+        return self.panel_control_page[index]['visible']
+
     def get_checkbox_signalX(self):
         return self.checkbox_signalX
 
@@ -124,10 +128,11 @@ class Screen(Observer):
         if self.canvas.find_withtag("signal"+name) :
             self.canvas.delete("signal"+name)
 
-        if signal and len(signal) > 1:
+        if signal and len(signal) > 1 and model.is_visible():
             plot = [(x*width, height/2.0*(y+1)) for (x, y) in signal]
-            signal_id = self.canvas.create_line(plot, fill=color, smooth=1, width=3,tags="signal"+name)
-        return signal_id
+            self.canvas.create_line(plot, fill=color, smooth=1, width=3,tags="signal"+name)
+            self.canvas.scale("signal"+name, width/2, height/2, 1.0, 0.25)
+
 
     def grid(self, row, col):
         w,h=self.canvas.winfo_width(),self.canvas.winfo_height()
