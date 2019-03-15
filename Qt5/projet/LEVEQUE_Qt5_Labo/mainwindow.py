@@ -15,6 +15,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.create_actions()
         self.create_menus()
         self.connect_actions()
+
+        #self.parentWidget().installTranslator(translate)
+        #QtWidgets.QApplication.instance().installTranslator(translate)
 ##        textEdit = QtGui.QTextEdit()
 ##        self.setCentralWidget(textEdit)
     def create_scene(self) :
@@ -30,27 +33,27 @@ class MainWindow(QtWidgets.QMainWindow):
     def create_actions(self) :
         # ------- FILE -------------
         # action NEW
-        self.action_new = QtWidgets.QAction(QtGui.QIcon('icons/new.png'), 'New', self)
+        self.action_new = QtWidgets.QAction(QtGui.QIcon('icons/new.png'), self.tr('New'), self)
         self.action_new.setShortcut('Ctrl+N')
         self.action_new.setStatusTip('New file')
       
         # action OPEN
-        self.action_open = QtWidgets.QAction(QtGui.QIcon('icons/open.png'), 'Open', self)
+        self.action_open = QtWidgets.QAction(QtGui.QIcon('icons/open.png'), self.tr('Open'), self)
         self.action_open.setShortcut('Ctrl+O')
         self.action_open.setStatusTip('Open file')
         
         # action SAVE
-        self.action_save = QtWidgets.QAction(QtGui.QIcon('icons/save.png'), 'Save', self)
+        self.action_save = QtWidgets.QAction(QtGui.QIcon('icons/save.png'), self.tr('Save'), self)
         self.action_save.setShortcut('Ctrl+S')
         self.action_save.setStatusTip('Save to file')
         
         # action SAVE AS
-        self.action_save_as = QtWidgets.QAction(QtGui.QIcon('icons/saveas.png'), 'Save as', self)
+        self.action_save_as = QtWidgets.QAction(QtGui.QIcon('icons/saveas.png'), self.tr('Save as'), self)
         self.action_save_as.setShortcut('Ctrl+S')
         self.action_save_as.setStatusTip('Save to file')  
         
         # action EXIT
-        self.action_exit = QtWidgets.QAction(QtGui.QIcon('icons/exit.png'), 'Exit', self)
+        self.action_exit = QtWidgets.QAction(QtGui.QIcon('icons/exit.png'), self.tr('Exit'), self)
         self.action_exit.setShortcut('Ctrl+Q')
         self.action_exit.setStatusTip('Exit application')
         self.group_action_tools = QtWidgets.QActionGroup(self)
@@ -58,50 +61,55 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # -------- TOOLS ------------
         # action LINE
-        self.action_line = QtWidgets.QAction(self.tr("&Line"), self)
+        self.action_line = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("&Line"), self)
         self.action_line.setCheckable(True)
         self.action_line.setChecked(True)
         self.group_action_tools.addAction(self.action_line)
         
         # action RECTANGLE
-        self.action_rect = QtWidgets.QAction(self.tr("&Rectangle"), self)
+        self.action_rect = QtWidgets.QAction(QtGui.QIcon('icons/rectangle.png'), self.tr("&Rectangle"), self)
         self.action_rect.setCheckable(True)
         self.group_action_tools.addAction(self.action_rect)
         
         # action ELLIPSE
-        self.action_elli = QtWidgets.QAction(self.tr("&Ellipse"), self)
+        self.action_elli = QtWidgets.QAction(QtGui.QIcon('icons/ellipse.png'), self.tr("&Ellipse"), self)
         self.action_elli.setCheckable(True)
         self.group_action_tools.addAction(self.action_elli)
        
         # action POLYGON
-        self.action_poly = QtWidgets.QAction(self.tr("&Polygon"), self)
+        self.action_poly = QtWidgets.QAction(QtGui.QIcon('icons/polygon.png'), self.tr("&Polygon"), self)
         self.action_poly.setCheckable(True)
         self.group_action_tools.addAction(self.action_poly)
         
         # action TEXT
-        self.action_text = QtWidgets.QAction(self.tr("&Text"), self)
+        self.action_text = QtWidgets.QAction(QtGui.QIcon('icons/text.png'), self.tr("&Text"), self)
         self.action_text.setCheckable(True)
         self.group_action_tools.addAction(self.action_text)
         
         # -------- STYLE ------------
-        self.action_pen_color = QtWidgets.QAction(self.tr("Color"), self)
-        self.action_pen_line  = QtWidgets.QAction(self.tr("Line"), self)
-        self.action_pen_width = QtWidgets.QAction(self.tr("Width"), self)
+        self.action_pen_color = QtWidgets.QAction(QtGui.QIcon('icons/select_color.png'), self.tr("Color"), self)
+        self.action_pen_line  = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("Line"), self)
+        self.action_pen_width = QtWidgets.QAction(QtGui.QIcon('icons/width.png'), self.tr("Width"), self)
         
-        self.action_brush_color = QtWidgets.QAction(self.tr("Color"), self)
-        self.action_brush_fill  = QtWidgets.QAction(self.tr("Fill"), self)
+        self.action_brush_color = QtWidgets.QAction(QtGui.QIcon('icons/color.png'), self.tr("Color"), self)
+        self.action_brush_fill  = QtWidgets.QAction(QtGui.QIcon('icons/fill.png'), self.tr("Fill"), self)
         
         self.action_font = QtWidgets.QAction(self.tr("Font"), self)
         
+        # -------- OPTIONS ---------
+        self.action_select_lang = QtWidgets.QAction(QtGui.QIcon('icons/select_lang.png'), self.tr("Select lang"), self)
+
         # ------- HELP -----------
-        self.action_about_us  = QtWidgets.QAction(self.tr("About Us"), self)
-        self.action_about_qt  = QtWidgets.QAction(self.tr("About Qt"), self)
-        self.action_about_app = QtWidgets.QAction(self.tr("About this Application"), self)
+        self.action_about_us  = QtWidgets.QAction(QtGui.QIcon('icons/info.png'), self.tr("About Us"), self)
+        self.action_about_qt  = QtWidgets.QAction(QtGui.QIcon('icons/about_qt.png'), self.tr("About Qt"), self)
+        self.action_about_app = QtWidgets.QAction(QtGui.QIcon('icons/info_app.png'), self.tr("About this Application"), self)
 
 
     def create_menus(self) :
  #       statusbar=self.statusBar()
-        menubar = self.menuBar()
+        #menubar = self.menuBar()
+        menubar = QtWidgets.QMenuBar(self)
+        self.setMenuBar(menubar)
         # ------- FILE -------------
         menu_file = menubar.addMenu(self.tr('&File'))
         menu_file.addAction(self.action_new)
@@ -111,7 +119,7 @@ class MainWindow(QtWidgets.QMainWindow):
         menu_file.addAction(self.action_exit)
 
         # -------- TOOLS ------------
-        menu_tools = menubar.addMenu('&Tools')
+        menu_tools = menubar.addMenu(self.tr('&Tools'))
         menu_tools.addAction(self.action_line)
         menu_tools.addAction(self.action_rect)
         menu_tools.addAction(self.action_elli)
@@ -119,20 +127,24 @@ class MainWindow(QtWidgets.QMainWindow):
         menu_tools.addAction(self.action_text)
 
         # -------- STYLE ------------
-        menu_style = menubar.addMenu('&Style')
-        menu_style_pen = menu_style.addMenu('Pen')
+        menu_style = menubar.addMenu(self.tr('&Style'))
+        menu_style_pen = menu_style.addMenu(self.tr('Pen'))
         menu_style_pen.addAction(self.action_pen_color)
         menu_style_pen.addAction(self.action_pen_line)
         menu_style_pen.addAction(self.action_pen_width)
         
-        menu_style_brush = menu_style.addMenu('Brush')
+        menu_style_brush = menu_style.addMenu(self.tr('Brush'))
         menu_style_brush.addAction(self.action_brush_color)
         menu_style_brush.addAction(self.action_brush_fill)
         
         menu_style.addAction(self.action_font)
        
+        # -------- OPTIONS ---------
+        menu_options = menubar.addMenu(self.tr('&Options'))
+        menu_options.addAction(self.action_select_lang)
+
         # -------- HELP ------------
-        menu_help = menubar.addMenu( self.tr("&Help"))
+        menu_help = menubar.addMenu(self.tr("&Help"))
         menu_help.addAction(self.action_about_us)
         menu_help.addAction(self.action_about_qt)
         menu_help.addAction(self.action_about_app)
@@ -164,6 +176,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_brush_fill.triggered.connect(self.brush_fill_selection)
         self.action_font.triggered.connect(self.font_selection)
         
+        self.action_select_lang.triggered.connect(self.change_lang)
+
         self.action_about_us.triggered.connect(self.help_about_us)
         self.action_about_qt.triggered.connect(self.help_about_qt)
         self.action_about_app.triggered.connect(self.help_about_app)
@@ -171,6 +185,18 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ### CALLBACK FUNCTIONS ##################################
     
+    def changeEvent(self, event):
+        if (event.type() == QtCore.QEvent.LanguageChange):
+            self.create_actions()
+            self.create_menus()
+            self.connect_actions()
+
+    def change_lang(self):
+        app = QtWidgets.QApplication.instance()
+        translate = QtCore.QTranslator(app)
+        translate.load('lang/en.qm')
+        app.installTranslator(translate)
+
     ## FILE ------------------------------------------------
     def file_new(self):
         print("Create new file")
@@ -251,31 +277,15 @@ class MainWindow(QtWidgets.QMainWindow):
     
     ## HELP ------------------------------------------------
     def help_about_us(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr(
-            """
-            Application créé par LEVEQUE Dorian
-            copyright ENIB 2019
-            """))
+        QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
         
     def help_about_qt(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About Qt"), self.tr(
-            """
-            Cette application est développé sous PyQt5.
-            Pour plus d'information, veuillez consulter
-            le site suivant https://www.qt.io/
-            
-            Version de PyQt5: 5.12
-            """))
+        QtWidgets.QMessageBox.information(self, self.tr("About Qt"), self.tr("This application is developed with PyQt5.\nFor more information, please visit\nthe following site https://www.qt.io\n\nVersion de PyQt5: 5.12"))
         
     def help_about_app(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About App"), self.tr(
-            """
-            Version Alpha 0.1
-            """))
-    
-    
-    
-    
+        QtWidgets.QMessageBox.information(self, self.tr("About App"), self.tr("Version Alpha 0.1"))
+
+
     
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
@@ -284,6 +294,14 @@ class MainWindow(QtWidgets.QMainWindow):
 if __name__ == "__main__" :  
     print(QT_VERSION_STR)
     app = QtWidgets.QApplication(sys.argv)
+    
+    locale = QtCore.QLocale().system().name().split('_')
+    print(locale)
+
+    translate = QtCore.QTranslator(app)
+    translate.load('lang/'+locale[0]+'.qm')
+    app.installTranslator(translate)
+
     main = MainWindow()
     main.show()
     sys.exit(app.exec_())
