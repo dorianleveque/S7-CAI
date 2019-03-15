@@ -2,31 +2,36 @@
 # -*- coding: utf-8 -*-
 import os,sys
 from PyQt5 import QtCore,QtGui,QtWidgets
-from PyQt5.QtCore import QT_VERSION_STR, QObject
+from PyQt5.QtCore import QT_VERSION_STR, QObject, QSettings
 
 from scene import Scene
+from settings import Settings
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
+        self.settings = Settings("MySoft", "Simply Paint")
         self.resize(500, 300)
-        self.setWindowTitle("Editeur v0.1")
+        self.setWindowTitle("Simply Paint v0.1")
         self.create_scene()
         self.create_actions()
         self.create_menus()
         self.connect_actions()
 
-        #self.parentWidget().installTranslator(translate)
-        #QtWidgets.QApplication.instance().installTranslator(translate)
+        lang = self.settings.get_selected_language()
+        locale = lang if (lang) else 'en'
+        self.set_selected_language(True, locale)
+
 ##        textEdit = QtGui.QTextEdit()
 ##        self.setCentralWidget(textEdit)
+
     def create_scene(self) :
-        view=QtWidgets.QGraphicsView()
-        self.scene=Scene(self)
-        text= self.scene.addText("Hello World !")
-    #    text.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable)
+        view = QtWidgets.QGraphicsView()
+        self.scene = Scene(self)
+        text = self.scene.addText("Hello World !")
+        text.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable)
         text.setPos(100,200)
-    #    text.setVisible(True)
+        text.setVisible(True)
         view.setScene(self.scene)
         self.setCentralWidget(view)
 
@@ -56,11 +61,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_exit = QtWidgets.QAction(QtGui.QIcon('icons/exit.png'), self.tr('Exit'), self)
         self.action_exit.setShortcut('Ctrl+Q')
         self.action_exit.setStatusTip('Exit application')
-        self.group_action_tools = QtWidgets.QActionGroup(self)
         
         
         # -------- TOOLS ------------
         # action LINE
+        self.group_action_tools = QtWidgets.QActionGroup(self)
+
         self.action_line = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("&Line"), self)
         self.action_line.setCheckable(True)
         self.action_line.setChecked(True)
@@ -88,16 +94,31 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # -------- STYLE ------------
         self.action_pen_color = QtWidgets.QAction(QtGui.QIcon('icons/select_color.png'), self.tr("Color"), self)
-        self.action_pen_line  = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("Line"), self)
+        self.action_pen_line  = QtWidgets.QAction(QtGui.QIcon('icons/texture.png'), self.tr("Line"), self)
         self.action_pen_width = QtWidgets.QAction(QtGui.QIcon('icons/width.png'), self.tr("Width"), self)
         
         self.action_brush_color = QtWidgets.QAction(QtGui.QIcon('icons/color.png'), self.tr("Color"), self)
         self.action_brush_fill  = QtWidgets.QAction(QtGui.QIcon('icons/fill.png'), self.tr("Fill"), self)
         
-        self.action_font = QtWidgets.QAction(self.tr("Font"), self)
+        self.action_font = QtWidgets.QAction(QtGui.QIcon('icons/font.png'), self.tr("Font"), self)
         
         # -------- OPTIONS ---------
-        self.action_select_lang = QtWidgets.QAction(QtGui.QIcon('icons/select_lang.png'), self.tr("Select lang"), self)
+        self.group_options_lang = QtWidgets.QActionGroup(self)
+
+        self.action_options_lang_fr = QtWidgets.QAction(self.tr("French"), self)
+        self.action_options_lang_fr.setCheckable(True)
+        self.group_options_lang.addAction(self.action_options_lang_fr)
+        
+        self.action_options_lang_en = QtWidgets.QAction(self.tr("English"), self)
+        self.action_options_lang_en.setCheckable(True)
+        self.group_options_lang.addAction(self.action_options_lang_en)
+
+        default_lang = self.settings.get_selected_language()
+        if (default_lang):
+            exec("self.action_options_lang_%s.setChecked(%d)" % (default_lang, True))
+        else:
+            self.action_options_lang_en.setChecked(True)
+            self.settings.set_selected_language('en')
 
         # ------- HELP -----------
         self.action_about_us  = QtWidgets.QAction(QtGui.QIcon('icons/info.png'), self.tr("About Us"), self)
@@ -106,8 +127,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def create_menus(self) :
- #       statusbar=self.statusBar()
-        #menubar = self.menuBar()
+        # statusbar=self.statusBar()
+        # menubar = self.menuBar()
         menubar = QtWidgets.QMenuBar(self)
         self.setMenuBar(menubar)
         # ------- FILE -------------
@@ -129,11 +150,13 @@ class MainWindow(QtWidgets.QMainWindow):
         # -------- STYLE ------------
         menu_style = menubar.addMenu(self.tr('&Style'))
         menu_style_pen = menu_style.addMenu(self.tr('Pen'))
+        menu_style_pen.setIcon(QtGui.QIcon('icons/pen.png'))
         menu_style_pen.addAction(self.action_pen_color)
         menu_style_pen.addAction(self.action_pen_line)
         menu_style_pen.addAction(self.action_pen_width)
         
         menu_style_brush = menu_style.addMenu(self.tr('Brush'))
+        menu_style_brush.setIcon(QtGui.QIcon('icons/brush.png'))
         menu_style_brush.addAction(self.action_brush_color)
         menu_style_brush.addAction(self.action_brush_fill)
         
@@ -141,7 +164,10 @@ class MainWindow(QtWidgets.QMainWindow):
        
         # -------- OPTIONS ---------
         menu_options = menubar.addMenu(self.tr('&Options'))
-        menu_options.addAction(self.action_select_lang)
+        menu_options_lang = menu_options.addMenu(self.tr("Select lang"))
+        menu_options_lang.setIcon(QtGui.QIcon('icons/select_lang.png'))
+        menu_options_lang.addAction(self.action_options_lang_en)
+        menu_options_lang.addAction(self.action_options_lang_fr)
 
         # -------- HELP ------------
         menu_help = menubar.addMenu(self.tr("&Help"))
@@ -151,8 +177,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
         # -------- TOOLBAR ------------
-        toolbar = self.addToolBar('Exit')
-        toolbar.addAction(self.action_exit)
+        #toolbar = self.addToolBar('Exit')
+        #toolbar.addAction(self.action_exit)
 
         
     def connect_actions(self) :
@@ -176,26 +202,21 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_brush_fill.triggered.connect(self.brush_fill_selection)
         self.action_font.triggered.connect(self.font_selection)
         
-        self.action_select_lang.triggered.connect(self.change_lang)
+        self.action_options_lang_en.triggered.connect(lambda checked, lang="en": self.set_selected_language(checked,lang))
+        self.action_options_lang_fr.triggered.connect(lambda checked, lang="fr": self.set_selected_language(checked,lang))
 
         self.action_about_us.triggered.connect(self.help_about_us)
         self.action_about_qt.triggered.connect(self.help_about_qt)
         self.action_about_app.triggered.connect(self.help_about_app)
         
         
-    ### CALLBACK FUNCTIONS ##################################
+    ### EVENTS FUNCTIONS ##################################
     
     def changeEvent(self, event):
         if (event.type() == QtCore.QEvent.LanguageChange):
             self.create_actions()
             self.create_menus()
             self.connect_actions()
-
-    def change_lang(self):
-        app = QtWidgets.QApplication.instance()
-        translate = QtCore.QTranslator(app)
-        translate.load('lang/en.qm')
-        app.installTranslator(translate)
 
     ## FILE ------------------------------------------------
     def file_new(self):
@@ -274,7 +295,15 @@ class MainWindow(QtWidgets.QMainWindow):
         print("font_selection")
        
     
-    
+    ## OPTIONS ---------------------------------------------
+    def set_selected_language(self, checked, lang):
+        app = QtWidgets.QApplication.instance()
+        translate = QtCore.QTranslator(app)
+        translate.load('lang/{}.qm'.format(lang))
+        self.settings.set_selected_language(lang)
+        app.installTranslator(translate)
+        print("new lang " + lang)
+        
     ## HELP ------------------------------------------------
     def help_about_us(self):
         QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
@@ -295,12 +324,12 @@ if __name__ == "__main__" :
     print(QT_VERSION_STR)
     app = QtWidgets.QApplication(sys.argv)
     
-    locale = QtCore.QLocale().system().name().split('_')
-    print(locale)
+    # locale = QtCore.QLocale().system().name().split('_')
+    # print(locale)
 
-    translate = QtCore.QTranslator(app)
-    translate.load('lang/'+locale[0]+'.qm')
-    app.installTranslator(translate)
+    #translate = QtCore.QTranslator(app)
+    #translate.load('lang/'+locale[0]+'.qm')
+    #app.installTranslator(translate)
 
     main = MainWindow()
     main.show()
