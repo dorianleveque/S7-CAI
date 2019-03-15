@@ -104,3 +104,5 @@ L'archive ne contiendra que le CODE SOURCE (*.py) et les données necessaire au 
   - ....
 
 
+cmd:
+pylupdate5 .\mainwindow.py -ts ./lang/fr.ts
