@@ -241,12 +241,6 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Sauvegarder sous")
 
     def file_exit(self):
-        #buttonReply = QtWidgets.QMessageBox.question(self, self.tr('Quit ?'), self.tr("Do you want to quit without saving ?"), QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
-        #if buttonReply == QtWidgets.QMessageBox.Yes:
-        #    print('Yes clicked.')
-        #    exit(0)
-        #else:
-        #    print('No clicked.')
         title = self.tr('Quit ?')
         text  = self.tr("Do you want to quit without saving ?")
         msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, title, text)
@@ -255,8 +249,8 @@ class MainWindow(QtWidgets.QMainWindow):
         msgbox.setDefaultButton(no_button)
         msgbox.exec()
 
-        if (msgbox.buttonClicked() == yes_button):
-            exit(0)       
+        if (msgbox.clickedButton() == yes_button):
+            exit(0)
 
 
     ## TOOLS ------------------------------------------------
@@ -314,7 +308,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## HELP ------------------------------------------------
     def help_about_us(self):
-        msgbox = QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
+        QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
         
     def help_about_qt(self):
         QtWidgets.QMessageBox.information(self, self.tr("About Qt"), self.tr("This application is developed with PyQt5.\nFor more information, please visit\nthe following site https://www.qt.io"))
@@ -323,8 +317,9 @@ class MainWindow(QtWidgets.QMainWindow):
         title = self.tr("About App")
         text = self.tr("Version: {}\nVersion de PyQt5: {}\nVersion de Python: {}".format("0.1 (alpha)",QT_VERSION_STR, sys.version[0:5]))
         msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Information,title,text)
-        msgbox.addButton(self.tr('Ok'), QtWidgets.QMessageBox.AcceptRole)
-        copie_button = msgbox.addButton(self.tr("Copie"), QtWidgets.QMessageBox.ActionRole)
+        ok_button    = msgbox.addButton(self.tr('Ok'), QtWidgets.QMessageBox.AcceptRole)
+        copie_button = msgbox.addButton(self.tr("Copie"), QtWidgets.QMessageBox.RejectRole)
+        msgbox.setDefaultButton(ok_button)
         msgbox.exec()
 
         if (msgbox.clickedButton() == copie_button):
@@ -336,17 +331,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if event.key() == QtCore.Qt.Key_Escape:
             self.close()
 
-if __name__ == "__main__" :  
-    print(QT_VERSION_STR)
+if __name__ == "__main__" :
     app = QtWidgets.QApplication(sys.argv)
-    
-    # locale = QtCore.QLocale().system().name().split('_')
-    # print(locale)
-
-    #translate = QtCore.QTranslator(app)
-    #translate.load('lang/'+locale[0]+'.qm')
-    #app.installTranslator(translate)
-
     main = MainWindow()
     main.show()
     sys.exit(app.exec_())
