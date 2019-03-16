@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import os,sys
 from PyQt5 import QtCore,QtGui,QtWidgets
-from PyQt5.QtCore import QT_VERSION_STR, QObject, QSettings
+from PyQt5.QtCore import QT_VERSION_STR, QObject
 
 from scene import Scene
 from settings import Settings
@@ -18,6 +18,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.create_menus()
         self.connect_actions()
 
+        # init language 
         lang = self.settings.get_selected_language()
         locale = lang if (lang) else 'en'
         self.set_selected_language(True, locale)
@@ -114,11 +115,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.group_options_lang.addAction(self.action_options_lang_en)
 
         default_lang = self.settings.get_selected_language()
-        if (default_lang):
-            exec("self.action_options_lang_%s.setChecked(%d)" % (default_lang, True))
-        else:
-            self.action_options_lang_en.setChecked(True)
-            self.settings.set_selected_language('en')
+        exec("self.action_options_lang_%s.setChecked(%d)" % (default_lang, True))
 
         # ------- HELP -----------
         self.action_about_us  = QtWidgets.QAction(QtGui.QIcon('icons/info.png'), self.tr("About Us"), self)
@@ -309,10 +306,10 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
         
     def help_about_qt(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About Qt"), self.tr("This application is developed with PyQt5.\nFor more information, please visit\nthe following site https://www.qt.io\n\nVersion de PyQt5: 5.12"))
+        QtWidgets.QMessageBox.information(self, self.tr("About Qt"), self.tr("This application is developed with PyQt5.\nFor more information, please visit\nthe following site https://www.qt.io"))
         
     def help_about_app(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About App"), self.tr("Version Alpha 0.1"))
+        QtWidgets.QMessageBox.information(self, self.tr("About App"), self.tr("Version: {}\nVersion de PyQt5: {}\nVersion de Python: {}".format("0.1 (alpha)",QT_VERSION_STR, sys.version[0:5])))
 
 
     
