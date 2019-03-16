@@ -296,6 +296,8 @@ class MainWindow(QtWidgets.QMainWindow):
     def set_selected_language(self, checked, lang):
         app = QtWidgets.QApplication.instance()
         translate = QtCore.QTranslator(app)
+        translate.load("qt_fr")
+        translate.load("qtbase_fr")
         translate.load('lang/{}.qm'.format(lang))
         self.settings.set_selected_language(lang)
         app.installTranslator(translate)
@@ -303,14 +305,22 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ## HELP ------------------------------------------------
     def help_about_us(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
+        msgbox = QtWidgets.QMessageBox.information(self, self.tr("About Me"), self.tr("Application created by LEVEQUE Dorian\ncopyright © LEVEQUE Dorian 2019"))
         
     def help_about_qt(self):
         QtWidgets.QMessageBox.information(self, self.tr("About Qt"), self.tr("This application is developed with PyQt5.\nFor more information, please visit\nthe following site https://www.qt.io"))
         
     def help_about_app(self):
-        QtWidgets.QMessageBox.information(self, self.tr("About App"), self.tr("Version: {}\nVersion de PyQt5: {}\nVersion de Python: {}".format("0.1 (alpha)",QT_VERSION_STR, sys.version[0:5])))
+        title = self.tr("About App")
+        text = self.tr("Version: {}\nVersion de PyQt5: {}\nVersion de Python: {}".format("0.1 (alpha)",QT_VERSION_STR, sys.version[0:5]))
+        msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Information,title,text)
+        msgbox.addButton(self.tr('Ok'), QtWidgets.QMessageBox.AcceptRole)
+        copie_button = msgbox.addButton(self.tr("Copie"), QtWidgets.QMessageBox.ActionRole)
+        msgbox.exec()
 
+        if (msgbox.clickedButton() == copie_button):
+            app = QtWidgets.QApplication.instance()
+            app.clipboard().setText(text)
 
     
     def keyPressEvent(self, event):
