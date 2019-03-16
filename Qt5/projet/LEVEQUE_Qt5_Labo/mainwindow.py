@@ -241,13 +241,22 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Sauvegarder sous")
 
     def file_exit(self):
-        buttonReply = QtWidgets.QMessageBox.question(self, self.tr('Quit ?'), self.tr("Do you want to quit without saving ?"), QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
-        if buttonReply == QtWidgets.QMessageBox.Yes:
-            print('Yes clicked.')
-            exit(0)
-        else:
-            print('No clicked.')
-        
+        #buttonReply = QtWidgets.QMessageBox.question(self, self.tr('Quit ?'), self.tr("Do you want to quit without saving ?"), QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+        #if buttonReply == QtWidgets.QMessageBox.Yes:
+        #    print('Yes clicked.')
+        #    exit(0)
+        #else:
+        #    print('No clicked.')
+        title = self.tr('Quit ?')
+        text  = self.tr("Do you want to quit without saving ?")
+        msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, title, text)
+        no_button = msgbox.addButton(self.tr('No'), QtWidgets.QMessageBox.NoRole)
+        yes_button= msgbox.addButton(self.tr('Yes'), QtWidgets.QMessageBox.YesRole)
+        msgbox.setDefaultButton(no_button)
+        msgbox.exec()
+
+        if (msgbox.buttonClicked() == yes_button):
+            exit(0)       
 
 
     ## TOOLS ------------------------------------------------
