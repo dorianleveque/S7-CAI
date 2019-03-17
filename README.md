@@ -1,8 +1,8 @@
 <div align="center">
     <img src="icons/logo_enib.png" alt="drawing" width="200px;"/>
     <h1>
-        <b>
-            <a style="color:black">ENIB S7</a>
+        <b style="color:black">
+            ENIB S7
         </b>
     </h1>
     <h3>Mon dépôt du semestre 7 (CAI)</h3>
@@ -16,28 +16,25 @@ Voici une courte présentation des différents projets dispo sur le depôt.
 <div align="center">
     <img src="TkInter/projet/LEVEQUE-Oscilloscope/icons/logo.png" alt="drawing" width="200px;"/>
     <h1>
-        <b>
-            <a style="color:#3E4751" >Osciloscope</a>
+        <b style="color:#3E4751">
+            Osciloscope
         </b>
     </h1>
 </div>
 
-    Cette application permettait de nous introduire la méthode MVC ainsi que les IHM à l'aide de TkInter.
-
-    Il s'agissait d'une petite application qui devait afficher plusieurs courbes dans un graphique. Chaque courbe étaient modifiable via des curseurs.
-
-    On pouvait ensuite sauvegarder nos différentes courbes (sauvegarder le projet) pour pouvoir y revenir plus tard.
+> Cette application permettait de nous introduire la méthode MVC ainsi que les IHM à l'aide de TkInter.     
+Il s'agissait d'une petite application qui devait afficher plusieurs courbes dans un graphique. Chaque courbe étaient modifiable via des curseurs.     
+On pouvait ensuite sauvegarder nos différentes courbes (sauvegarder le projet) pour pouvoir y revenir plus tard.
 
 <div align="center">
     <img src="Qt5/projet/LEVEQUE_Qt5_Labo/icons/simplyPaint.png" alt="drawing" width="200px;"/>
     <h1>
-        <b>
-            <a style="color:#FF3800" >Simply Paint</a>
+        <b style="color:#FF3800">
+            Simply Paint
         </b>
     </h1>
     <h3>Paint fast, Paint simply !</h3>
 </div>
 
-    Une courte application graphique permettant de créer facilement et rapidement un dessin. Il est possible dans cet éditeur de pouvoir modifier à chaque instant l'ensemble des figures (dimension, couleur, ...). 
-    
-    L'application est réalisé avec la bibliothèque de Qt à l'aide de PyQt5.
+> Une courte application graphique permettant de créer facilement et rapidement un dessin. Il est possible dans cet éditeur de pouvoir modifier à chaque instant l'ensemble des figures (dimension, couleur, ...).  
+L'application est réalisé avec la bibliothèque de Qt à l'aide de PyQt5.
