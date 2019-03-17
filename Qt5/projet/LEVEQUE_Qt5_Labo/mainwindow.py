@@ -11,12 +11,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         self.settings = Settings("MySoft", "Simply Paint")
-        self.resize(500, 300)
+        self.resize(600, 450)
         self.setWindowTitle("Simply Paint v0.1")
+        self.setWindowIcon(QtGui.QIcon("./icons/simplyPaint.ico"))
         self.create_scene()
         self.create_actions()
         self.create_menus()
         self.connect_actions()
+        self.create_toolbar()
 
         # init language 
         lang = self.settings.get_selected_language()
@@ -41,27 +43,27 @@ class MainWindow(QtWidgets.QMainWindow):
         # action NEW
         self.action_new = QtWidgets.QAction(QtGui.QIcon('icons/new.png'), self.tr('New'), self)
         self.action_new.setShortcut('Ctrl+N')
-        self.action_new.setStatusTip('New file')
+        self.action_new.setStatusTip(self.tr('New file'))
       
         # action OPEN
         self.action_open = QtWidgets.QAction(QtGui.QIcon('icons/open.png'), self.tr('Open'), self)
         self.action_open.setShortcut('Ctrl+O')
-        self.action_open.setStatusTip('Open file')
+        self.action_open.setStatusTip(self.tr('Open a file'))
         
         # action SAVE
         self.action_save = QtWidgets.QAction(QtGui.QIcon('icons/save.png'), self.tr('Save'), self)
         self.action_save.setShortcut('Ctrl+S')
-        self.action_save.setStatusTip('Save to file')
+        self.action_save.setStatusTip(self.tr('Save to file'))
         
         # action SAVE AS
         self.action_save_as = QtWidgets.QAction(QtGui.QIcon('icons/saveas.png'), self.tr('Save as'), self)
         self.action_save_as.setShortcut('Ctrl+S')
-        self.action_save_as.setStatusTip('Save to file')  
+        self.action_save_as.setStatusTip(self.tr('Save to file in a chosen directory'))  
         
         # action EXIT
         self.action_exit = QtWidgets.QAction(QtGui.QIcon('icons/exit.png'), self.tr('Exit'), self)
         self.action_exit.setShortcut('Ctrl+Q')
-        self.action_exit.setStatusTip('Exit application')
+        self.action_exit.setStatusTip(self.tr('Exit Application'))
         
         
         # -------- TOOLS ------------
@@ -69,27 +71,32 @@ class MainWindow(QtWidgets.QMainWindow):
         self.group_action_tools = QtWidgets.QActionGroup(self)
 
         self.action_line = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("&Line"), self)
+        self.action_line.setStatusTip(self.tr('Draw a line'))
         self.action_line.setCheckable(True)
         self.action_line.setChecked(True)
         self.group_action_tools.addAction(self.action_line)
         
         # action RECTANGLE
         self.action_rect = QtWidgets.QAction(QtGui.QIcon('icons/rectangle.png'), self.tr("&Rectangle"), self)
+        self.action_rect.setStatusTip(self.tr('Draw a rectangle'))
         self.action_rect.setCheckable(True)
         self.group_action_tools.addAction(self.action_rect)
         
         # action ELLIPSE
         self.action_elli = QtWidgets.QAction(QtGui.QIcon('icons/ellipse.png'), self.tr("&Ellipse"), self)
+        self.action_elli.setStatusTip(self.tr('Draw an ellipse'))
         self.action_elli.setCheckable(True)
         self.group_action_tools.addAction(self.action_elli)
        
         # action POLYGON
         self.action_poly = QtWidgets.QAction(QtGui.QIcon('icons/polygon.png'), self.tr("&Polygon"), self)
+        self.action_poly.setStatusTip(self.tr('Draw a ploygon'))
         self.action_poly.setCheckable(True)
         self.group_action_tools.addAction(self.action_poly)
         
         # action TEXT
         self.action_text = QtWidgets.QAction(QtGui.QIcon('icons/text.png'), self.tr("&Text"), self)
+        self.action_text.setStatusTip(self.tr('Place a text'))
         self.action_text.setCheckable(True)
         self.group_action_tools.addAction(self.action_text)
         
@@ -124,7 +131,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
     def create_menus(self) :
-        # statusbar=self.statusBar()
+        statusbar = QtWidgets.QStatusBar(self)
+        self.setStatusBar(statusbar)
         # menubar = self.menuBar()
         menubar = QtWidgets.QMenuBar(self)
         self.setMenuBar(menubar)
@@ -173,7 +181,22 @@ class MainWindow(QtWidgets.QMainWindow):
         menu_help.addAction(self.action_about_app)
 
 
+    def create_toolbar(self):
         # -------- TOOLBAR ------------
+        file_toolbar = QtWidgets.QToolBar(self)
+        self.addToolBar(file_toolbar)
+        file_toolbar.addAction(self.action_new)
+        file_toolbar.addAction(self.action_open)
+        file_toolbar.addAction(self.action_save)
+
+        tool_toolbar = QtWidgets.QToolBar(self)
+        self.addToolBar(tool_toolbar)
+        tool_toolbar.addAction(self.action_line)
+        tool_toolbar.addAction(self.action_rect)
+        tool_toolbar.addAction(self.action_elli)
+        tool_toolbar.addAction(self.action_poly)
+        tool_toolbar.addAction(self.action_text)
+
         #toolbar = self.addToolBar('Exit')
         #toolbar.addAction(self.action_exit)
 

@@ -6,6 +6,7 @@
     <message>
         <location filename="../../../../../../../../../Scolarit?/ENIB/Cours/S7/CAI/Qt5/projet/LEVEQUE_Qt5_Labo/mainwindow.py" line="42"/>
         <source>New</source>
+        <translatorcomment>Nouveau</translatorcomment>
         <translation>Nouveau</translation>
     </message>
     <message>
