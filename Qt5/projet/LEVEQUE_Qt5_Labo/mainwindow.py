@@ -250,12 +250,12 @@ class MainWindow(QtWidgets.QMainWindow):
    
     def file_open(self):
         filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', os.getcwd())
-        fileopen=QtCore.QFile(filename)
+        fileopen = QtCore.QFile(filename[0])
         if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text)==None :
             print("fileopen.open(QtCore.QIODevice.WriteOnly)==None")
             return -1
         else :
-            print(filename + " opened !")
+            print(filename[0] + " opened !")
 
     def file_save(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File', os.getcwd())
