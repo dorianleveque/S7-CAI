@@ -1,8 +1,8 @@
 <div align="center">
     <img src="icons/logo_enib.png" alt="drawing" width="200px;"/>
     <h1>
-        <b>
-            <a style="color:black">ENIB S7</a>
+        <b style="color:black">
+            ENIB S7
         </b>
     </h1>
     <h3>Mon dépôt du semestre 7 (CAI)</h3>
@@ -16,8 +16,8 @@ Voici une courte présentation des différents projets dispo sur le depôt.
 <div align="center">
     <img src="TkInter/projet/LEVEQUE-Oscilloscope/icons/logo.png" alt="drawing" width="200px;"/>
     <h1>
-        <b>
-            <a style="color:#3E4751" >Osciloscope</a>
+        <b style="color:#3E4751">
+            Osciloscope
         </b>
     </h1>
 </div>
@@ -31,8 +31,8 @@ Voici une courte présentation des différents projets dispo sur le depôt.
 <div align="center">
     <img src="Qt5/projet/LEVEQUE_Qt5_Labo/icons/simplyPaint.png" alt="drawing" width="200px;"/>
     <h1>
-        <b>
-            <a style="color:#FF3800" >Simply Paint</a>
+        <b style="color:#FF3800">
+            Simply Paint
         </b>
     </h1>
     <h3>Paint fast, Paint simply !</h3>
