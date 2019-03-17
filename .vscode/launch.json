@@ -15,7 +15,7 @@
             "name": "TkInter Oscilloscope",
             "type": "python",
             "request": "launch",
-            "pythonPath": "C:\\Program Files (x86)\\Python\\Python 2.7\\python.exe",
+            "pythonPath": "C:\\Program Files (x86)\\Python\\python.exe",
             "args": ["-2"],
             "cwd":"${workspaceFolder}/TkInter/projet/LEVEQUE-Oscilloscope",
             "program": "${workspaceFolder}/TkInter/projet/LEVEQUE-Oscilloscope/oscilloscope.py",
