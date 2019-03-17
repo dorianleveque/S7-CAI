@@ -232,11 +232,17 @@ class MainWindow(QtWidgets.QMainWindow):
         
     ### EVENTS FUNCTIONS ##################################
     
+    def closeEvent(self, event):
+        if (event.type() == QtCore.QEvent.Close):
+            self.file_exit()
+        event.ignore()
+
     def changeEvent(self, event):
         if (event.type() == QtCore.QEvent.LanguageChange):
             self.create_actions()
             self.create_menus()
             self.connect_actions()
+        event.ignore()
 
     ## FILE ------------------------------------------------
     def file_new(self):
