@@ -61,7 +61,7 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # action SAVE AS
         self.action_save_as = QtWidgets.QAction(QtGui.QIcon('icons/saveas.png'), self.tr('Save as'), self)
-        self.action_save_as.setShortcut('Ctrl+S')
+        self.action_save_as.setShortcut('Ctrl+Shift+S')
         self.action_save_as.setStatusTip(self.tr('Save to file in a chosen directory'))
         self.action_save_as.setToolTip(self.tr('Save to file in a chosen directory')) 
         
@@ -250,9 +250,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def changeEvent(self, event):
         if (event.type() == QtCore.QEvent.LanguageChange):
-            self.create_actions()
             self.create_menus()
-            self.connect_actions()
         event.ignore()
 
     ## FILE ------------------------------------------------
@@ -276,7 +274,7 @@ class MainWindow(QtWidgets.QMainWindow):
             
     def file_save_as(self):
         print("Sauvegarder sous")
-        filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File', os.getcwd())
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd())
         filesave = QtCore.QFile(filename[0])
         if filesave.open(QtCore.QIODevice.WriteOnly) == None :
             print("filesave.open(QtCore.QIODevice.WriteOnly)==None")
