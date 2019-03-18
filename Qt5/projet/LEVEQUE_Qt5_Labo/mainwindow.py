@@ -11,6 +11,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         self.settings = Settings("MySoft", "Simply Paint")
+        self.srcfile = None    # Current file for save option
         self.resize(600, 450)
         self.setWindowTitle("Simply Paint v0.1")
         self.setWindowIcon(QtGui.QIcon("./icons/simplyPaint.ico"))
@@ -44,26 +45,31 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_new = QtWidgets.QAction(QtGui.QIcon('icons/new.png'), self.tr('New'), self)
         self.action_new.setShortcut('Ctrl+N')
         self.action_new.setStatusTip(self.tr('New file'))
+        self.action_new.setToolTip(self.tr('New file'))
       
         # action OPEN
         self.action_open = QtWidgets.QAction(QtGui.QIcon('icons/open.png'), self.tr('Open'), self)
         self.action_open.setShortcut('Ctrl+O')
         self.action_open.setStatusTip(self.tr('Open a file'))
+        self.action_open.setToolTip(self.tr('Open a file'))
         
         # action SAVE
         self.action_save = QtWidgets.QAction(QtGui.QIcon('icons/save.png'), self.tr('Save'), self)
         self.action_save.setShortcut('Ctrl+S')
         self.action_save.setStatusTip(self.tr('Save to file'))
+        self.action_save.setToolTip(self.tr('Save to file'))
         
         # action SAVE AS
         self.action_save_as = QtWidgets.QAction(QtGui.QIcon('icons/saveas.png'), self.tr('Save as'), self)
         self.action_save_as.setShortcut('Ctrl+S')
-        self.action_save_as.setStatusTip(self.tr('Save to file in a chosen directory'))  
+        self.action_save_as.setStatusTip(self.tr('Save to file in a chosen directory'))
+        self.action_save_as.setToolTip(self.tr('Save to file in a chosen directory')) 
         
         # action EXIT
         self.action_exit = QtWidgets.QAction(QtGui.QIcon('icons/exit.png'), self.tr('Exit'), self)
         self.action_exit.setShortcut('Ctrl+Q')
         self.action_exit.setStatusTip(self.tr('Exit Application'))
+        self.action_exit.setToolTip(self.tr('Exit Application'))
         
         
         # -------- TOOLS ------------
@@ -72,6 +78,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.action_line = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("&Line"), self)
         self.action_line.setStatusTip(self.tr('Draw a line'))
+        self.action_line.setToolTip(self.tr('Draw a line'))
         self.action_line.setCheckable(True)
         self.action_line.setChecked(True)
         self.group_action_tools.addAction(self.action_line)
@@ -79,24 +86,28 @@ class MainWindow(QtWidgets.QMainWindow):
         # action RECTANGLE
         self.action_rect = QtWidgets.QAction(QtGui.QIcon('icons/rectangle.png'), self.tr("&Rectangle"), self)
         self.action_rect.setStatusTip(self.tr('Draw a rectangle'))
+        self.action_rect.setToolTip(self.tr('Draw a rectangle'))
         self.action_rect.setCheckable(True)
         self.group_action_tools.addAction(self.action_rect)
         
         # action ELLIPSE
         self.action_elli = QtWidgets.QAction(QtGui.QIcon('icons/ellipse.png'), self.tr("&Ellipse"), self)
         self.action_elli.setStatusTip(self.tr('Draw an ellipse'))
+        self.action_elli.setToolTip(self.tr('Draw an ellipse'))
         self.action_elli.setCheckable(True)
         self.group_action_tools.addAction(self.action_elli)
        
         # action POLYGON
         self.action_poly = QtWidgets.QAction(QtGui.QIcon('icons/polygon.png'), self.tr("&Polygon"), self)
-        self.action_poly.setStatusTip(self.tr('Draw a ploygon'))
+        self.action_poly.setStatusTip(self.tr('Draw a polygon'))
+        self.action_poly.setToolTip(self.tr('Draw a polygon'))
         self.action_poly.setCheckable(True)
         self.group_action_tools.addAction(self.action_poly)
         
         # action TEXT
         self.action_text = QtWidgets.QAction(QtGui.QIcon('icons/text.png'), self.tr("&Text"), self)
         self.action_text.setStatusTip(self.tr('Place a text'))
+        self.action_text.setToolTip(self.tr('Place a text'))
         self.action_text.setCheckable(True)
         self.group_action_tools.addAction(self.action_text)
         
@@ -258,16 +269,20 @@ class MainWindow(QtWidgets.QMainWindow):
             print(filename[0] + " opened !")
 
     def file_save(self):
+        if (self.srcfile):
+            print("save")
+        else:
+            self.file_save_as()
+            
+    def file_save_as(self):
+        print("Sauvegarder sous")
         filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save File', os.getcwd())
-        filesave = QtCore.QFile(filename)
+        filesave = QtCore.QFile(filename[0])
         if filesave.open(QtCore.QIODevice.WriteOnly) == None :
             print("filesave.open(QtCore.QIODevice.WriteOnly)==None")
             return -1
         else :
-            print(filename + " ready to save !")
-            
-    def file_save_as(self):
-        print("Sauvegarder sous")
+            print(filename[0] + " ready to save !")
 
     def file_exit(self):
         title = self.tr('Quit ?')
