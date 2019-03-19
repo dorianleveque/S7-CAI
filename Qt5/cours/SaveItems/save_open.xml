@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene version="v1.0">
+    <GraphicsItemList>
+        <GraphicsItem type="rect">
+            <shape x="10" y="40" w="200" h="300"/>
+        </GraphicsItem>
+    </GraphicsItemList>
+</Scene>

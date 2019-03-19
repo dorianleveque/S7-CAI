@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene version="v1.0">
+    <GraphicsItemList>
+        <GraphicsItem type="4"/>
+        <GraphicsItem type="3"/>
+        <GraphicsItem type="6" x="10" y="100" w="100" h="10" style="0"/>
+    </GraphicsItemList>
+</Scene>
