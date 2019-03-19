@@ -181,11 +181,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # -------- STYLE ------------
         menu_style = menubar.addMenu(self.tr('&Style'))
-        menu_style_pen = menu_style.addMenu(self.tr('Pen'))
-        menu_style_pen.setIcon(QtGui.QIcon('icons/pen.png'))
-        menu_style_pen.addAction(self.action_pen_color)
-        menu_style_pen.addAction(self.action_pen_line)
-        menu_style_pen.addAction(self.action_pen_width)
+        self.menu_style_pen = menu_style.addMenu(self.tr('Pen'))
+        self.menu_style_pen.setIcon(QtGui.QIcon('icons/pen.png'))
+        self.menu_style_pen.addAction(self.action_pen_color)
+        self.menu_style_pen.addAction(self.action_pen_line)
+        self.menu_style_pen.addAction(self.action_pen_width)
         
         menu_style_brush = menu_style.addMenu(self.tr('Brush'))
         menu_style_brush.setIcon(QtGui.QIcon('icons/brush.png'))

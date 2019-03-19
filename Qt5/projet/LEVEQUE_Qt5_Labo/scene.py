@@ -8,6 +8,7 @@ from PyQt5.QtCore import QT_VERSION_STR
 class Scene (QtWidgets.QGraphicsScene) :
     def __init__(self,parent=None) :
         QtWidgets.QGraphicsScene.__init__(self)
+        self.parent = parent
         self.tool = 'pointer'
         self.begin,self.end,self.offset=QtCore.QPoint(0,0),QtCore.QPoint(0,0),QtCore.QPoint(0,0)
         self.item_maintained = None
@@ -27,6 +28,10 @@ class Scene (QtWidgets.QGraphicsScene) :
         rect.setBrush(self.brush)
         self.setBackgroundBrush(QtGui.QColor(255, 255, 50, 127))
         self.addItem(rect)
+
+        #self.rightClickMenu = QtWidgets.QMenu()
+        #self.add
+        #self.addWidget(self.right_click_menu, QtCore.Qt.CustomContextMenu)
         
     def set_tool(self,tool) :
         print("set_tool(self,tool)",tool)
@@ -52,6 +57,9 @@ class Scene (QtWidgets.QGraphicsScene) :
         if event.key() == QtCore.Qt.Key_Shift:
             self.shift_key_pressed = False
 
+    def contextMenuEvent(self, event):
+        print("hello !")
+        self.parent.menu_style_pen.exec(QtGui.QCursor.pos())
 
     def mousePressEvent(self, event):
         print("Scene.mousePressEvent()")
@@ -78,8 +86,8 @@ class Scene (QtWidgets.QGraphicsScene) :
 
         self.end = event.scenePos()
 
-        if self.item_maintained:
-            if self.tool == "pointer":
+        if self.tool == "pointer":
+            if self.item_maintained:
                 self.item_maintained.setPos(event.scenePos() - self.offset)
 
         elif self.tool == "line" and self.pressed:
@@ -117,9 +125,9 @@ class Scene (QtWidgets.QGraphicsScene) :
         print("Scene.mouseReleaseEvent()",self.tool)
         self.end = event.scenePos()
         self.pressed = False
-        if self.item_maintained :
+        if self.tool == "pointer":
             print(" item_maintained ")
-            if self.tool == "pointer":
+            if self.item_maintained :
                 self.item_maintained.setPos(event.scenePos() - self.offset)
                 self.item_maintained=None
         
