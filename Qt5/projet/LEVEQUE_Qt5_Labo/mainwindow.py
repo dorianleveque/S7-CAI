@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import os,sys
-from PyQt5 import QtCore,QtGui,QtWidgets
+from PyQt5 import QtCore,QtGui,QtWidgets, QtXml
 from PyQt5.QtCore import QT_VERSION_STR, QObject
 
 from scene import Scene
@@ -73,14 +73,20 @@ class MainWindow(QtWidgets.QMainWindow):
         
         
         # -------- TOOLS ------------
-        # action LINE
         self.group_action_tools = QtWidgets.QActionGroup(self)
+        # action pointer
+        self.action_pointer = QtWidgets.QAction(QtGui.QIcon('icons/pointer.png'), self.tr("&Pointer"), self)
+        self.action_pointer.setStatusTip(self.tr('Point a figure'))
+        self.action_pointer.setToolTip(self.tr('Point a figure'))
+        self.action_pointer.setCheckable(True)
+        self.action_pointer.setChecked(True)
+        self.group_action_tools.addAction(self.action_pointer)
 
+        # action LINE
         self.action_line = QtWidgets.QAction(QtGui.QIcon('icons/line.png'), self.tr("&Line"), self)
         self.action_line.setStatusTip(self.tr('Draw a line'))
         self.action_line.setToolTip(self.tr('Draw a line'))
         self.action_line.setCheckable(True)
-        self.action_line.setChecked(True)
         self.group_action_tools.addAction(self.action_line)
         
         # action RECTANGLE
@@ -110,6 +116,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_text.setToolTip(self.tr('Place a text'))
         self.action_text.setCheckable(True)
         self.group_action_tools.addAction(self.action_text)
+
+        # action ERASER
+        self.action_erase = QtWidgets.QAction(QtGui.QIcon('icons/eraser.png'), self.tr("&Erase"), self)
+        self.action_erase.setStatusTip(self.tr('Erase a figure'))
+        self.action_erase.setToolTip(self.tr('Erase a figure'))
+        self.action_erase.setCheckable(True)
+        self.group_action_tools.addAction(self.action_erase)
+
         
         # -------- STYLE ------------
         self.action_pen_color = QtWidgets.QAction(QtGui.QIcon('icons/select_color.png'), self.tr("Color"), self)
@@ -157,11 +171,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # -------- TOOLS ------------
         menu_tools = menubar.addMenu(self.tr('&Tools'))
+        menu_tools.addAction(self.action_pointer)
         menu_tools.addAction(self.action_line)
         menu_tools.addAction(self.action_rect)
         menu_tools.addAction(self.action_elli)
         menu_tools.addAction(self.action_poly)
         menu_tools.addAction(self.action_text)
+        menu_tools.addAction(self.action_erase)
 
         # -------- STYLE ------------
         menu_style = menubar.addMenu(self.tr('&Style'))
@@ -202,14 +218,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
         tool_toolbar = QtWidgets.QToolBar(self)
         self.addToolBar(tool_toolbar)
+        tool_toolbar.addAction(self.action_pointer)
         tool_toolbar.addAction(self.action_line)
         tool_toolbar.addAction(self.action_rect)
         tool_toolbar.addAction(self.action_elli)
         tool_toolbar.addAction(self.action_poly)
         tool_toolbar.addAction(self.action_text)
-
-        #toolbar = self.addToolBar('Exit')
-        #toolbar.addAction(self.action_exit)
+        tool_toolbar.addAction(self.action_erase)
 
         
     def connect_actions(self) :
@@ -219,12 +234,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_save_as.triggered.connect(self.file_save_as)
         self.action_exit.triggered.connect(self.file_exit)
         
+        self.action_pointer.triggered.connect(lambda checked, tool="pointer": self.set_action_tool(checked,tool))
         self.action_line.triggered.connect(lambda checked, tool="line": self.set_action_tool(checked,tool))
         self.action_rect.triggered.connect(lambda checked, tool="rect": self.set_action_tool(checked,tool))
         self.action_elli.triggered.connect(lambda checked, tool="elli": self.set_action_tool(checked,tool))
         self.action_poly.triggered.connect(lambda checked, tool="poly": self.set_action_tool(checked,tool))
         self.action_text.triggered.connect(lambda checked, tool="text": self.set_action_tool(checked,tool))
-        
+        self.action_erase.triggered.connect(lambda checked, tool="eraser": self.set_action_tool(checked, tool))
+
         self.action_pen_color.triggered.connect(self.pen_color_selection)
         self.action_pen_line.triggered.connect(self.pen_line_selection)
         self.action_pen_width.triggered.connect(self.pen_width_selection)
@@ -274,13 +291,26 @@ class MainWindow(QtWidgets.QMainWindow):
             
     def file_save_as(self):
         print("Sauvegarder sous")
-        filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd())
-        filesave = QtCore.QFile(filename[0])
-        if filesave.open(QtCore.QIODevice.WriteOnly) == None :
-            print("filesave.open(QtCore.QIODevice.WriteOnly)==None")
-            return -1
-        else :
-            print(filename[0] + " ready to save !")
+        #filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), '*.svg')[0]
+        #filesave = QtCore.QFile(filename)
+        #if filesave.open(QtCore.QIODevice.WriteOnly):
+        #    document = QtXml.QDomDocument()
+        #    if document.setContent(filesave):
+        #            newModel = QtXml.  DomModel(document, self)
+        #            self.model = newModel
+        #            self.xmlPath = filePath
+
+
+
+
+
+        #if filesave.open(QtCore.QIODevice.WriteOnly) == None :
+        #    print("filesave.open(QtCore.QIODevice.WriteOnly)==None")
+        #    return -1
+        #else :
+        #    print(filename[0] + " ready to save !")
+        #    filesave.write("msg")
+        #    filesave.close()
 
     def file_exit(self):
         title = self.tr('Quit ?')
