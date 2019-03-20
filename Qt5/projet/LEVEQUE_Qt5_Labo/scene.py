@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import sys
-from numpy import sign
 from PyQt5 import QtCore,QtCore,QtGui,QtWidgets
 from PyQt5.QtCore import QT_VERSION_STR
 
@@ -101,7 +100,7 @@ class Scene (QtWidgets.QGraphicsScene) :
             h = self.end.y()-self.begin.y()
             
             if self.shift_key_pressed:
-                h = w if (sign(w) == sign(h)) else -w
+                h = w if (bool(w > 0) == bool(h > 0)) else -w
 
             if not self.item_shape:
                 self.item_shape = self.addRect(x, y, w, h, pen_shape, brush_shape)
@@ -113,7 +112,7 @@ class Scene (QtWidgets.QGraphicsScene) :
             h = self.end.y()-self.begin.y()
 
             if self.shift_key_pressed:
-                h = w if (sign(w) == sign(h)) else -w
+                h = w if (bool(w > 0) == bool(h > 0)) else -w
 
             if not self.item_shape:
                 self.item_shape = self.addEllipse(x, y, w, h, pen_shape, brush_shape)
