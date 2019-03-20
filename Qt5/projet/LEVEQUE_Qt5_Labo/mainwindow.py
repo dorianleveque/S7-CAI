@@ -372,11 +372,9 @@ class MainWindow(QtWidgets.QMainWindow):
     def set_selected_language(self, checked, lang):
         app = QtWidgets.QApplication.instance()
         translate = QtCore.QTranslator(app)
-        translate.load("qt_fr")
-        translate.load("qtbase_fr")
-        translate.load('lang/{}.qm'.format(lang))
-        self.settings.set_selected_language(lang)
+        translate.load(QtCore.QLocale(lang), 'lang', '.', 'lang', '.qm')
         app.installTranslator(translate)
+        self.settings.set_selected_language(QtCore.QLocale(lang).bcp47Name())
         print("new lang " + lang)
         
     ## HELP ------------------------------------------------
