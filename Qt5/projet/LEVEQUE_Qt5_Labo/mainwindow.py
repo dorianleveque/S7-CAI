@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import os,sys
-from PyQt5 import QtCore,QtGui,QtWidgets, QtXml
+from PyQt5 import QtCore,QtGui,QtWidgets, QtSvg, QtXml
 from PyQt5.QtCore import QT_VERSION_STR, QObject
 
 from scene import Scene
@@ -32,10 +32,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def create_scene(self) :
         view = QtWidgets.QGraphicsView()
         self.scene = Scene(self)
-        text = self.scene.addText("Hello World !")
-        text.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable)
-        text.setPos(100,200)
-        text.setVisible(True)
+        #text = self.scene.addText("Hello World !")
+        #text.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable)
+        #text.setPos(100,200)
+        #text.setVisible(True)
         view.setScene(self.scene)
         self.setCentralWidget(view)
 
@@ -275,13 +275,42 @@ class MainWindow(QtWidgets.QMainWindow):
         print("Create new file")
    
     def file_open(self):
-        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', os.getcwd())
-        fileopen = QtCore.QFile(filename[0])
-        if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text)==None :
-            print("fileopen.open(QtCore.QIODevice.WriteOnly)==None")
-            return -1
-        else :
-            print(filename[0] + " opened !")
+        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', os.getcwd())[0]
+        fileopen = QtCore.QFile(filename)
+        if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text):
+            print(filename + " opened !")
+            self.scene.clear()
+
+            self.scene.setSceneRect(QtSvg.QSvgRenderer()  .getSizes(filename))
+            for item in QtSvg.SvgReader.getElements(filename):
+                if item.type() == QtCore.Qt.QGraphicsPathItem.type:
+                    print("hello1")
+                elif item.type() == QtCore.Qt.QGraphicsRectItem.type:
+                    print("rect")
+        #    workplaceScene->clear();
+        #
+        #    workplaceScene->setSceneRect(SvgReader::getSizes(path));
+        #
+        #    foreach (QGraphicsItem *item, SvgReader::getElements(path)) {
+        #        switch (item->type()) {
+        #        case QGraphicsPathItem::Type: {
+        #            VEPolyline *polyline = qgraphicsitem_cast<VEPolyline*>(item);
+        #            workplaceScene->addItem(polyline);
+        #            connect(polyline, &VEPolyline::clicked, workplaceScene, &VEWorkplace::signalSelectItem);
+        #            connect(polyline, &VEPolyline::signalMove, workplaceScene, &VEWorkplace::slotMove);
+        #            break;
+        #        }
+        #        case QGraphicsRectItem::Type: {
+        #            VERectangle *rect = qgraphicsitem_cast<VERectangle*>(item);
+        #            workplaceScene->addItem(rect);
+        #            connect(rect, &VERectangle::clicked, workplaceScene, &VEWorkplace::signalSelectItem);
+        #            connect(rect, &VERectangle::signalMove, workplaceScene, &VEWorkplace::slotMove);
+        #            break;
+        #        }
+        #        default:
+        #            break;
+        #        }
+        #    }
 
     def file_save(self):
         if (self.srcfile):
@@ -291,17 +320,49 @@ class MainWindow(QtWidgets.QMainWindow):
             
     def file_save_as(self):
         print("Sauvegarder sous")
-        #filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), '*.svg')[0]
-        #filesave = QtCore.QFile(filename)
-        #if filesave.open(QtCore.QIODevice.WriteOnly):
-        #    document = QtXml.QDomDocument()
-        #    if document.setContent(filesave):
-        #            newModel = QtXml.  DomModel(document, self)
-        #            self.model = newModel
-        #            self.xmlPath = filePath
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), "SVG files (*.svg)")[0]
+        filesave = QtCore.QFile(filename)
+        if filesave.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.ReadOnly):
+
+            generator = QtSvg.QSvgGenerator()
+            generator.setFileName(filename)
+            generator.setTitle("Simply Paint")
+            generator.setDescription("Filed created by Simply Paint.")
+            generator.setSize(QtCore.QSize(self.scene.width(), self.scene.height()))
+            generator.setViewBox(QtCore.QRect(0, 0, self.scene.width(), self.scene.height()))
+            
+            painter = QtGui.QPainter()
+            painter.begin(generator)
+            self.scene.render(painter)
+            painter.end()
+            print("before close")
+            
+            doc = QtXml.QDomDocument()
+            doc.setContent(filesave)
+            filesave.close()
+        
 
 
+        filesave = QtCore.QFile(filename)
+        fileStream = QtCore.QTextStream(filesave)
+        if filesave.open(QtCore.QIODevice.WriteOnly):
+            SVGNode = doc.lastChild()
+            boardNode = SVGNode.lastChild()
+            groupFormNodeList = boardNode.childNodes()
+            print("gList")
+            print(groupFormNodeList.size())
 
+            for i in range(groupFormNodeList.length()):
+                groupFormNode = groupFormNodeList.item(i)
+                if not groupFormNode.hasChildNodes():
+                    print('useless node '+str(i))
+                    print(boardNode.removeChild(groupFormNode))
+            
+            groupFormNodeList = boardNode.childNodes()
+            print(groupFormNodeList.size())
+
+            doc.save(fileStream, 2)
+            filesave.close()
 
 
         #if filesave.open(QtCore.QIODevice.WriteOnly) == None :

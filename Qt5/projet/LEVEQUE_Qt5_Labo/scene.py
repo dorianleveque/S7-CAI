@@ -12,7 +12,8 @@ class Scene (QtWidgets.QGraphicsScene) :
         self.begin,self.end,self.offset=QtCore.QPoint(0,0),QtCore.QPoint(0,0),QtCore.QPoint(0,0)
         self.item_maintained = None
         self.item_shape = None
-        self.pressed = False
+        self.mouse_pressed = False
+        self.ctrl_key_pressed = False
         self.shift_key_pressed = False
 
         # pen init
@@ -22,15 +23,11 @@ class Scene (QtWidgets.QGraphicsScene) :
         # brush init
         self.brush = QtGui.QBrush(QtCore.Qt.green)
         self.brush.setColor(QtCore.Qt.blue)
-        rect = QtWidgets.QGraphicsRectItem(0,0,100,100)
-        rect.setPen(self.pen)
-        rect.setBrush(self.brush)
-        self.setBackgroundBrush(QtGui.QColor(255, 255, 50, 127))
-        self.addItem(rect)
-
-        #self.rightClickMenu = QtWidgets.QMenu()
-        #self.add
-        #self.addWidget(self.right_click_menu, QtCore.Qt.CustomContextMenu)
+        #rect = QtWidgets.QGraphicsRectItem(0,0,100,100)
+        #rect.setPen(self.pen)
+        #rect.setBrush(self.brush)
+        #self.setBackgroundBrush(QtGui.QColor(255, 255, 50, 127))
+        #self.addItem(rect)
         
     def set_tool(self,tool) :
         print("set_tool(self,tool)",tool)
@@ -51,13 +48,16 @@ class Scene (QtWidgets.QGraphicsScene) :
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Shift:
             self.shift_key_pressed = True
+        elif event.key() == QtCore.Qt.Key_Control:
+            self.ctrl_key_pressed = True
 
     def keyReleaseEvent(self, event):
         if event.key() == QtCore.Qt.Key_Shift:
             self.shift_key_pressed = False
+        elif event.key() == QtCore.Qt.Key_Control:
+            self.ctrl_key_pressed = False
 
     def contextMenuEvent(self, event):
-        print("hello !")
         self.parent.menu_style_pen.exec(QtGui.QCursor.pos())
 
     def mousePressEvent(self, event):
@@ -71,7 +71,7 @@ class Scene (QtWidgets.QGraphicsScene) :
                 self.removeItem(self.item_maintained)
 
 
-        self.pressed = True
+        self.mouse_pressed = True
         self.item_shape = None
                 
     def mouseMoveEvent(self, event):
@@ -89,12 +89,12 @@ class Scene (QtWidgets.QGraphicsScene) :
             if self.item_maintained:
                 self.item_maintained.setPos(event.scenePos() - self.offset)
 
-        elif self.tool == "line" and self.pressed:
+        elif self.tool == "line" and self.mouse_pressed:
             if not self.item_shape:
                 self.item_shape = self.addLine(self.begin.x(), self.begin.y(), self.end.x(), self.end.y(), pen_shape)
             self.item_shape.setLine(self.begin.x(), self.begin.y(), self.end.x(), self.end.y())
 
-        elif self.tool == "rect" and self.pressed:
+        elif self.tool == "rect" and self.mouse_pressed:
             x, y = self.begin.x(), self.begin.y()
             w = self.end.x()-self.begin.x()
             h = self.end.y()-self.begin.y()
@@ -106,7 +106,7 @@ class Scene (QtWidgets.QGraphicsScene) :
                 self.item_shape = self.addRect(x, y, w, h, pen_shape, brush_shape)
             self.item_shape.setRect(x, y, w, h)
 
-        elif self.tool == "elli" and self.pressed:
+        elif self.tool == "elli" and self.mouse_pressed:
             x, y = self.begin.x(), self.begin.y()
             w = self.end.x()-self.begin.x()
             h = self.end.y()-self.begin.y()
@@ -123,7 +123,7 @@ class Scene (QtWidgets.QGraphicsScene) :
     def mouseReleaseEvent(self, event):
         print("Scene.mouseReleaseEvent()",self.tool)
         self.end = event.scenePos()
-        self.pressed = False
+        self.mouse_pressed = False
         if self.tool == "pointer":
             print(" item_maintained ")
             if self.item_maintained :
