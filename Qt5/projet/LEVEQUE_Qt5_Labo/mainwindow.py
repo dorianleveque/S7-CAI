@@ -5,6 +5,7 @@ from PyQt5 import QtCore,QtGui,QtWidgets, QtSvg, QtXml
 from PyQt5.QtCore import QT_VERSION_STR, QObject
 
 from scene import Scene
+from svgReader import SvgReader
 from settings import Settings
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -281,36 +282,14 @@ class MainWindow(QtWidgets.QMainWindow):
             print(filename + " opened !")
             self.scene.clear()
 
-            self.scene.setSceneRect(QtSvg.QSvgRenderer()  .getSizes(filename))
-            for item in QtSvg.SvgReader.getElements(filename):
-                if item.type() == QtCore.Qt.QGraphicsPathItem.type:
-                    print("hello1")
-                elif item.type() == QtCore.Qt.QGraphicsRectItem.type:
-                    print("rect")
-        #    workplaceScene->clear();
-        #
-        #    workplaceScene->setSceneRect(SvgReader::getSizes(path));
-        #
-        #    foreach (QGraphicsItem *item, SvgReader::getElements(path)) {
-        #        switch (item->type()) {
-        #        case QGraphicsPathItem::Type: {
-        #            VEPolyline *polyline = qgraphicsitem_cast<VEPolyline*>(item);
-        #            workplaceScene->addItem(polyline);
-        #            connect(polyline, &VEPolyline::clicked, workplaceScene, &VEWorkplace::signalSelectItem);
-        #            connect(polyline, &VEPolyline::signalMove, workplaceScene, &VEWorkplace::slotMove);
-        #            break;
-        #        }
-        #        case QGraphicsRectItem::Type: {
-        #            VERectangle *rect = qgraphicsitem_cast<VERectangle*>(item);
-        #            workplaceScene->addItem(rect);
-        #            connect(rect, &VERectangle::clicked, workplaceScene, &VEWorkplace::signalSelectItem);
-        #            connect(rect, &VERectangle::signalMove, workplaceScene, &VEWorkplace::slotMove);
-        #            break;
-        #        }
-        #        default:
-        #            break;
-        #        }
-        #    }
+            svgReader = SvgReader()
+            #self.scene.setSceneRect(QtCore.QRectF(0, 0, 513, 328))
+            for element in svgReader.getElements(fileopen):
+                print("rect added!")
+                self.scene.addItem(element)
+
+            fileopen.close()
+
 
     def file_save(self):
         if (self.srcfile):
@@ -352,10 +331,11 @@ class MainWindow(QtWidgets.QMainWindow):
             print("gList")
             print(groupFormNodeList.size())
 
-            for i in range(groupFormNodeList.length()):
-                groupFormNode = groupFormNodeList.item(i)
+            count = groupFormNodeList.length()
+            for i in range(count):
+                groupFormNode = groupFormNodeList.item(count-i-1)
                 if not groupFormNode.hasChildNodes():
-                    print('useless node '+str(i))
+                    print('useless node '+str(count-i-1))
                     print(boardNode.removeChild(groupFormNode))
             
             groupFormNodeList = boardNode.childNodes()

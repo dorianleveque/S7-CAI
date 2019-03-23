@@ -17,16 +17,17 @@ class Scene (QtWidgets.QGraphicsScene) :
         self.shift_key_pressed = False
 
         # pen init
-        self.pen = QtGui.QPen()
-        self.pen.setColor(QtCore.Qt.red)
-        self.pen.setWidth(3)
-        # brush init
-        self.brush = QtGui.QBrush(QtCore.Qt.green)
-        self.brush.setColor(QtCore.Qt.blue)
-        #rect = QtWidgets.QGraphicsRectItem(0,0,100,100)
+        #self.pen = QtGui.QPen()
+        #self.pen.setColor(QtCore.Qt.red)
+        #self.pen.setWidth(3)
+        ## brush init
+        #self.brush = QtGui.QBrush(QtCore.Qt.green)
+        #self.brush.setColor(QtCore.Qt.blue)
+        #rect = QtWidgets.QGraphicsRectItem(-482,-231,338,161)
         #rect.setPen(self.pen)
         #rect.setBrush(self.brush)
-        #self.setBackgroundBrush(QtGui.QColor(255, 255, 50, 127))
+        #rect.setTransform(QtGui.QTransform().rotate(20))
+        ## self.setBackgroundBrush(QtGui.QColor(255, 255, 50, 127))
         #self.addItem(rect)
         
     def set_tool(self,tool) :
