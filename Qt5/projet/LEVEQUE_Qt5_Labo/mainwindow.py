@@ -37,6 +37,7 @@ class MainWindow(QtWidgets.QMainWindow):
         #text.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable)
         #text.setPos(100,200)
         #text.setVisible(True)
+        view.setMouseTracking(True)
         view.setScene(self.scene)
         self.setCentralWidget(view)
 
@@ -274,32 +275,44 @@ class MainWindow(QtWidgets.QMainWindow):
     ## FILE ------------------------------------------------
     def file_new(self):
         print("Create new file")
+        if self.scene.sceneChanged():
+            title = self.tr('New ?')
+            text  = self.tr("Do you want to create a new drawing without saving the old one ?")
+            msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, title, text)
+            msgbox.setWindowIcon(self.windowIcon())
+            no_button = msgbox.addButton(self.tr('No'), QtWidgets.QMessageBox.NoRole)
+            yes_button= msgbox.addButton(self.tr('Yes'), QtWidgets.QMessageBox.YesRole)
+            msgbox.setDefaultButton(no_button)
+            msgbox.exec()
+            
+            if (msgbox.clickedButton() == no_button):
+                self.file_save()
+        self.scene.clear()
+        self.scene.setSceneChanged(False)
    
     def file_open(self):
         filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', os.getcwd())[0]
         fileopen = QtCore.QFile(filename)
         if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text):
-            print(filename + " opened !")
             self.scene.clear()
-
+            self.scene.setSceneChanged(False)
             svgReader = SvgReader()
-            #self.scene.setSceneRect(QtCore.QRectF(0, 0, 513, 328))
+
+            #self.scene.setSceneRect(svgReader.getSize(fileopen))
             for element in svgReader.getElements(fileopen):
-                print("rect added!")
                 self.scene.addItem(element)
 
             fileopen.close()
+            self.srcfile = filename
 
 
     def file_save(self):
         if (self.srcfile):
-            print("save")
+            self.save(self.srcfile)
         else:
             self.file_save_as()
             
-    def file_save_as(self):
-        print("Sauvegarder sous")
-        filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), "SVG files (*.svg)")[0]
+    def save(self, filename):
         filesave = QtCore.QFile(filename)
         if filesave.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.ReadOnly):
 
@@ -314,7 +327,6 @@ class MainWindow(QtWidgets.QMainWindow):
             painter.begin(generator)
             self.scene.render(painter)
             painter.end()
-            print("before close")
             
             doc = QtXml.QDomDocument()
             doc.setContent(filesave)
@@ -328,44 +340,43 @@ class MainWindow(QtWidgets.QMainWindow):
             SVGNode = doc.lastChild()
             boardNode = SVGNode.lastChild()
             groupFormNodeList = boardNode.childNodes()
-            print("gList")
-            print(groupFormNodeList.size())
 
             count = groupFormNodeList.length()
             for i in range(count):
                 groupFormNode = groupFormNodeList.item(count-i-1)
                 if not groupFormNode.hasChildNodes():
-                    print('useless node '+str(count-i-1))
-                    print(boardNode.removeChild(groupFormNode))
+                    boardNode.removeChild(groupFormNode)
             
             groupFormNodeList = boardNode.childNodes()
-            print(groupFormNodeList.size())
 
             doc.save(fileStream, 2)
             filesave.close()
-
-
-        #if filesave.open(QtCore.QIODevice.WriteOnly) == None :
-        #    print("filesave.open(QtCore.QIODevice.WriteOnly)==None")
-        #    return -1
-        #else :
-        #    print(filename[0] + " ready to save !")
-        #    filesave.write("msg")
-        #    filesave.close()
+            
+            self.srcfile = filename
+            self.scene.setSceneChanged(False)
+    
+    def file_save_as(self):
+        print("Sauvegarder sous")
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), "SVG files (*.svg)")[0]
+        self.save(filename)
 
     def file_exit(self):
-        title = self.tr('Quit ?')
-        text  = self.tr("Do you want to quit without saving ?")
-        msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, title, text)
-        msgbox.setWindowIcon(self.windowIcon())
-        no_button = msgbox.addButton(self.tr('No'), QtWidgets.QMessageBox.NoRole)
-        yes_button= msgbox.addButton(self.tr('Yes'), QtWidgets.QMessageBox.YesRole)
-        msgbox.setDefaultButton(no_button)
-        msgbox.exec()
+        if self.scene.sceneChanged():
+            title = self.tr('Quit ?')
+            text  = self.tr("Do you want to quit without saving ?")
+            msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, title, text)
+            msgbox.setWindowIcon(self.windowIcon())
+            no_button = msgbox.addButton(self.tr('No'), QtWidgets.QMessageBox.NoRole)
+            yes_button= msgbox.addButton(self.tr('Yes'), QtWidgets.QMessageBox.YesRole)
+            msgbox.setDefaultButton(no_button)
+            msgbox.exec()
 
-        if (msgbox.clickedButton() == yes_button):
+            if (msgbox.clickedButton() == yes_button):
+                exit(0)
+            if (msgbox.clickedButton() == no_button):
+                self.file_save()
+        else:
             exit(0)
-
 
     ## TOOLS ------------------------------------------------
     def set_action_tool(self,checked, tool) :

@@ -127,125 +127,186 @@ class SvgReader():
     def __getRectangles(self, docDOM):
         rectGraphicsList = []
         
-        SVGNode = docDOM.elementsByTagName('svg').at(0)
-        SVGNodeElement = SVGNode.toElement()
-        rectNodeList = SVGNodeElement.elementsByTagName('rect')
+        SVGNode = docDOM.elementsByTagName('svg')
+        if len(SVGNode):
+            SVGNodeElement = SVGNode.at(0).toElement()
+            rectNodeList = SVGNodeElement.elementsByTagName('rect')
 
-        graphicsRectItem = QtWidgets.QGraphicsRectItem()
-        for i in range(rectNodeList.size()):
-            rectElementItem = rectNodeList.item(i).toElement()
-            graphicsRectItem = QtWidgets.QGraphicsRectItem(
-                int(rectElementItem.attribute("x")),
-                int(rectElementItem.attribute("y")),
-                int(rectElementItem.attribute("width")),
-                int(rectElementItem.attribute("height"))
-            )
+            graphicsRectItem = QtWidgets.QGraphicsRectItem()
+            for i in range(rectNodeList.size()):
+                rectElementItem = rectNodeList.item(i).toElement()
+                graphicsRectItem = QtWidgets.QGraphicsRectItem(
+                    int(rectElementItem.attribute("x")),
+                    int(rectElementItem.attribute("y")),
+                    int(rectElementItem.attribute("width")),
+                    int(rectElementItem.attribute("height"))
+                )
 
-            brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(rectElementItem, 'fill', '#ffffff')))
-            pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(rectElementItem, 'stroke', '#000000')))
-            pen.setWidth(int(self.__getAttributes(rectElementItem, 'stroke-width', '1')))
+                brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(rectElementItem, 'fill', '#ffffff')))
+                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(rectElementItem, 'stroke', '#000000')))
+                pen.setWidth(int(self.__getAttributes(rectElementItem, 'stroke-width', '1')))
 
-            self.__applyAllTransforms(graphicsRectItem, self.__getTransforms(rectElementItem))
+                self.__applyAllTransforms(graphicsRectItem, self.__getTransforms(rectElementItem))
 
-            graphicsRectItem.setPen(pen)
-            graphicsRectItem.setBrush(brush)
-            rectGraphicsList.append(graphicsRectItem)
+                graphicsRectItem.setPen(pen)
+                graphicsRectItem.setBrush(brush)
+                rectGraphicsList.append(graphicsRectItem)
         return rectGraphicsList
 
     def __getEllipses(self, docDOM):
         ellipseGraphicsList = []
 
-        SVGNode = docDOM.elementsByTagName('svg').at(0)
-        SVGNodeElement = SVGNode.toElement()
-        ellipseNodeList = SVGNodeElement.elementsByTagName('ellipse')
+        SVGNode = docDOM.elementsByTagName('svg')
+        if len(SVGNode)>0:
+            SVGNodeElement = SVGNode.at(0).toElement()
+            ellipseNodeList = SVGNodeElement.elementsByTagName('ellipse')
 
-        for i in range(ellipseNodeList.size()):
-            ellipseElementItem = ellipseNodeList.item(i).toElement()
-            cx = float(ellipseElementItem.attribute("cx"))
-            cy = float(ellipseElementItem.attribute("cy"))
-            rx = float(ellipseElementItem.attribute("rx"))
-            ry = float(ellipseElementItem.attribute("ry"))
-            graphicsEllipseItem = QtWidgets.QGraphicsEllipseItem(cx-rx, cy-ry, rx*2.0, ry*2.0)
+            for i in range(ellipseNodeList.size()):
+                ellipseElementItem = ellipseNodeList.item(i).toElement()
+                cx = float(ellipseElementItem.attribute("cx"))
+                cy = float(ellipseElementItem.attribute("cy"))
+                rx = float(ellipseElementItem.attribute("rx"))
+                ry = float(ellipseElementItem.attribute("ry"))
+                graphicsEllipseItem = QtWidgets.QGraphicsEllipseItem(cx-rx, cy-ry, rx*2.0, ry*2.0)
 
-            brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(ellipseElementItem, 'fill', '#ffffff')))
-            pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(ellipseElementItem, 'stroke', '#000000')))
-            pen.setWidth(int(self.__getAttributes(ellipseElementItem, 'stroke-width', '1')))
+                brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(ellipseElementItem, 'fill', '#ffffff')))
+                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(ellipseElementItem, 'stroke', '#000000')))
+                pen.setWidth(int(self.__getAttributes(ellipseElementItem, 'stroke-width', '1')))
 
-            self.__applyAllTransforms(graphicsEllipseItem, self.__getTransforms(ellipseElementItem))
+                self.__applyAllTransforms(graphicsEllipseItem, self.__getTransforms(ellipseElementItem))
 
-            graphicsEllipseItem.setPen(pen)
-            graphicsEllipseItem.setBrush(brush)
-            ellipseGraphicsList.append(graphicsEllipseItem)
+                graphicsEllipseItem.setPen(pen)
+                graphicsEllipseItem.setBrush(brush)
+                ellipseGraphicsList.append(graphicsEllipseItem)
         return ellipseGraphicsList
 
     def __getCircles(self, docDOM):
         circleGraphicsList = []
 
-        SVGNode = docDOM.elementsByTagName('svg').at(0)
-        SVGNodeElement = SVGNode.toElement()
-        circleNodeList = SVGNodeElement.elementsByTagName('circle')
+        SVGNode = docDOM.elementsByTagName('svg')
+        if len(SVGNode)>0:
+            SVGNodeElement = SVGNode.at(0).toElement()
+            circleNodeList = SVGNodeElement.elementsByTagName('circle')
 
-        for i in range(circleNodeList.size()):
-            circleElementItem = circleNodeList.item(i).toElement()
-            cx = float(circleElementItem.attribute("cx"))
-            cy = float(circleElementItem.attribute("cy"))
-            r  = float(circleElementItem.attribute("r"))
-            graphicsCircleItem = QtWidgets.QGraphicsEllipseItem(cx-r, cy-r, r*2.0, r*2.0)
+            for i in range(circleNodeList.size()):
+                circleElementItem = circleNodeList.item(i).toElement()
+                cx = float(circleElementItem.attribute("cx"))
+                cy = float(circleElementItem.attribute("cy"))
+                r  = float(circleElementItem.attribute("r"))
+                graphicsCircleItem = QtWidgets.QGraphicsEllipseItem(cx-r, cy-r, r*2.0, r*2.0)
 
-            brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(circleElementItem, 'fill', '#ffffff')))
-            pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(circleElementItem, 'stroke', '#000000')))
-            pen.setWidth(int(self.__getAttributes(circleElementItem, 'stroke-width', '1')))
+                brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(circleElementItem, 'fill', '#ffffff')))
+                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(circleElementItem, 'stroke', '#000000')))
+                pen.setWidth(int(self.__getAttributes(circleElementItem, 'stroke-width', '1')))
 
-            self.__applyAllTransforms(graphicsCircleItem, self.__getTransforms(circleElementItem))
+                self.__applyAllTransforms(graphicsCircleItem, self.__getTransforms(circleElementItem))
 
 
-            graphicsCircleItem.setPen(pen)
-            graphicsCircleItem.setBrush(brush)
-            circleGraphicsList.append(graphicsCircleItem)
+                graphicsCircleItem.setPen(pen)
+                graphicsCircleItem.setBrush(brush)
+                circleGraphicsList.append(graphicsCircleItem)
         return circleGraphicsList
 
 
     def __getLines(self, docDOM):
         lineGraphicsList = []
 
-        SVGNode = docDOM.elementsByTagName('svg').at(0)
-        SVGNodeElement = SVGNode.toElement()
-        lineNodeList = SVGNodeElement.elementsByTagName('polyline')
+        SVGNode = docDOM.elementsByTagName('svg')
+        if len(SVGNode)>0:
+            SVGNodeElement = SVGNode.at(0).toElement()
+            lineNodeList = SVGNodeElement.elementsByTagName('polyline')
 
-        for i in range(lineNodeList.size()):
-            lineElementItem = lineNodeList.item(i).toElement()
-            points = self.__findParams(r"([-?+?0-9.,]+)", lineElementItem.attribute('points'))
-            graphicsPoints = []
-            if len(points) == 2:
-                for point in points:
-                    p = point.split(',')
-                    graphicsPoints.append(QtCore.QPoint(float(p[0]), float(p[1])))
+            for i in range(lineNodeList.size()):
+                lineElementItem = lineNodeList.item(i).toElement()
+                points = self.__findParams(r"([-?+?0-9.,]+)", lineElementItem.attribute('points'))
+                graphicsPoints = []
+                if len(points) == 2:
+                    for point in points:
+                        p = point.split(',')
+                        graphicsPoints.append(QtCore.QPoint(float(p[0]), float(p[1])))
 
-                line = QtCore.QLineF(graphicsPoints[0], graphicsPoints[1])
-                graphicsLineItem = QtWidgets.QGraphicsLineItem(line)
-                
-                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(lineElementItem, 'stroke', '#000000')))
-                pen.setWidth(int(self.__getAttributes(lineElementItem, 'stroke-width', '1')))
-                self.__applyAllTransforms(graphicsLineItem, self.__getTransforms(lineElementItem))
-                
-                graphicsLineItem.setPen(pen)
-                lineGraphicsList.append(graphicsLineItem)
+                    line = QtCore.QLineF(graphicsPoints[0], graphicsPoints[1])
+                    graphicsLineItem = QtWidgets.QGraphicsLineItem(line)
+                    
+                    pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(lineElementItem, 'stroke', '#000000')))
+                    pen.setWidth(int(self.__getAttributes(lineElementItem, 'stroke-width', '1')))
+                    self.__applyAllTransforms(graphicsLineItem, self.__getTransforms(lineElementItem))
+                    
+                    graphicsLineItem.setPen(pen)
+                    lineGraphicsList.append(graphicsLineItem)
         return lineGraphicsList
 
+    def __getPolygons(self, docDOM):
+        polygonGraphicsList = []
 
+        polygonGraphicsList += self.__getPolygonsByTag(docDOM, 'polygon', 'points')
+        # support pour la balise path
+        polygonGraphicsList += self.__getPolygonsByTag(docDOM, 'path', 'd')
+
+        return polygonGraphicsList
+
+
+    def __getPolygonsByTag(self, docDOM, tag, tagAttribute):
+        polygonGraphicsList = []
+
+        SVGNode = docDOM.elementsByTagName('svg')
+        if len(SVGNode)>0:
+            SVGNodeElement = SVGNode.at(0).toElement()
+            polyNodeList = SVGNodeElement.elementsByTagName(tag)
+
+            for i in range(polyNodeList.size()):
+                polyElementItem = polyNodeList.item(i).toElement()
+                points = self.__findParams(r"([-?+?0-9.,]+)", polyElementItem.attribute(tagAttribute))
+                graphicsPoints = []
+                if len(points) > 2 and points[0] == points[len(points)-1]:
+                    for point in points:
+                        p = point.split(',')
+                        graphicsPoints.append(QtCore.QPoint(float(p[0]), float(p[1])))
+                    polygon = QtGui.QPolygonF(graphicsPoints)
+                    graphicsPolyItem = QtWidgets.QGraphicsPolygonItem(polygon)
+
+                    brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(polyElementItem, 'fill', '#ffffff')))
+                    pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(polyElementItem, 'stroke', '#000000')))
+                    pen.setWidth(int(self.__getAttributes(polyElementItem, 'stroke-width', '1')))
+                    self.__applyAllTransforms(graphicsPolyItem, self.__getTransforms(polyElementItem))
+                    
+                    graphicsPolyItem.setPen(pen)
+                    graphicsPolyItem.setBrush(brush)
+                    polygonGraphicsList.append(graphicsPolyItem)
+        return polygonGraphicsList
+        
 
     def getElements(self, fileopen):        
         doc = QtXml.QDomDocument()
         if not doc.setContent(fileopen):
-            return -1
+            return []
         
-        rectangles = (self.__getRectangles(doc))
-        ellipses = (self.__getEllipses(doc))
-        circles = (self.__getCircles(doc))
-        lines = (self.__getLines(doc))
+        rectangles = self.__getRectangles(doc)
+        ellipses = self.__getEllipses(doc)
+        circles = self.__getCircles(doc)
+        lines = self.__getLines(doc)
+        polygons = self.__getPolygons(doc)
 
-        return rectangles + ellipses + circles + lines
+        return rectangles + ellipses + circles + lines + polygons
         
+    def getSize(self, fileopen):
+        doc = QtXml.QDomDocument()
+        if not doc.setContent(fileopen):
+            return QtCore.QRectF(0, 0, 200, 200)
+
+        SVGNode = doc.elementsByTagName('svg')
+        if len(SVGNode)>0:
+            SVGNodeElement = SVGNode.at(0).toElement()
+            viewBoxParams = self.__findParams(r"([-?+?0-9.,]+)", SVGNodeElement.attribute('viewBox'))
+            return QtCore.QRectF(
+                int(viewBoxParams[0]),
+                int(viewBoxParams[1]),
+                int(viewBoxParams[2]),
+                int(viewBoxParams[3])
+            )
+        else:
+            return QtCore.QRectF(0, 0, 200, 200)
+                
 
 
 if __name__ == "__main__":

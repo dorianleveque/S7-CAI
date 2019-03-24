@@ -6,6 +6,7 @@ if __name__ == "__main__" :
     print(QT_VERSION_STR)
     app=QtWidgets.QApplication(sys.argv)
     view=QtWidgets.QGraphicsView()
+    view.setMouseTracking(True)
     scene=QtWidgets.QGraphicsScene()
 #    view.setGeometry(500,200,1000,600)
     print(view.width()) 
@@ -52,6 +53,16 @@ if __name__ == "__main__" :
     r = rect.boundingRect()
     rect.setTransformOriginPoint(QtCore.QPoint(r.width()/2,r.height()/2))
     rect.setRotation(45)
+
+    poly_painter = QtGui.QPainterPath(QtCore.QPointF(0, 0))
+    item_shape = scene.addPath(poly_painter, pen, QtCore.Qt.blue)
+    
+    poly_painter.lineTo(-60, 60)
+    item_shape.setPath(poly_painter)
+
+    poly_painter.setElementPositionAt(1, -100, 80)
+    item_shape.setPath(poly_painter)
+    scene.update()
 
     scene.addItem(rect)
     view.setScene(scene)
