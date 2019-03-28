@@ -6,6 +6,7 @@ from PyQt5.QtCore import QT_VERSION_STR, QObject
 
 from scene import Scene
 from svgReader import SvgReader
+from save_open import SaveOpen
 from settings import Settings
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -129,11 +130,100 @@ class MainWindow(QtWidgets.QMainWindow):
         
         # -------- STYLE ------------
         self.action_pen_color = QtWidgets.QAction(QtGui.QIcon('icons/select_color.png'), self.tr("Color"), self)
-        self.action_pen_line  = QtWidgets.QAction(QtGui.QIcon('icons/texture.png'), self.tr("Line"), self)
+        #self.action_pen_line  = QtWidgets.QAction(QtGui.QIcon('icons/texture.png'), self.tr("Line"), self)
+        self.group_style_line = QtWidgets.QActionGroup(self)
+
+        self.action_pen_line_solidline = QtWidgets.QAction(self.tr('Solid line'), self)
+        self.action_pen_line_solidline.setCheckable(True)
+        self.action_pen_line_solidline.setChecked(True)
+        self.group_style_line.addAction(self.action_pen_line_solidline)
+
+        self.action_pen_line_no_border = QtWidgets.QAction(self.tr('no border'), self)
+        self.action_pen_line_no_border.setCheckable(True)
+        self.group_style_line.addAction(self.action_pen_line_no_border)
+
+        self.action_pen_line_dashline = QtWidgets.QAction(self.tr('Dash line'), self)
+        self.action_pen_line_dashline.setCheckable(True)
+        self.group_style_line.addAction(self.action_pen_line_dashline)
+
+        self.action_pen_line_dotline = QtWidgets.QAction(self.tr('Dot line'), self)
+        self.action_pen_line_dotline.setCheckable(True)
+        self.group_style_line.addAction(self.action_pen_line_dotline)
+
+        self.action_pen_line_dashdotline = QtWidgets.QAction(self.tr('Dash dot line'), self)
+        self.action_pen_line_dashdotline.setCheckable(True)
+        self.group_style_line.addAction(self.action_pen_line_dashdotline)
+
+        self.action_pen_line_dashdotdotline = QtWidgets.QAction(self.tr('Dash dot dot line'), self)
+        self.action_pen_line_dashdotdotline.setCheckable(True)
+        self.group_style_line.addAction(self.action_pen_line_dashdotdotline)
+
         self.action_pen_width = QtWidgets.QAction(QtGui.QIcon('icons/width.png'), self.tr("Width"), self)
         
-        self.action_brush_color = QtWidgets.QAction(QtGui.QIcon('icons/color.png'), self.tr("Color"), self)
-        self.action_brush_fill  = QtWidgets.QAction(QtGui.QIcon('icons/fill.png'), self.tr("Fill"), self)
+        self.action_brush_color = QtWidgets.QAction(QtGui.QIcon('icons/select_color.png'), self.tr("Color"), self)
+        #self.action_brush_fill  = QtWidgets.QAction(QtGui.QIcon('icons/fill.png'), self.tr("Fill"), self)
+        self.group_style_brush = QtWidgets.QActionGroup(self)
+
+        self.action_brush_fill_solidpattern = QtWidgets.QAction(self.tr('Uniform color'), self)
+        self.action_brush_fill_solidpattern.setCheckable(True)
+        self.action_brush_fill_solidpattern.setChecked(True)
+        self.group_style_brush.addAction(self.action_brush_fill_solidpattern)
+
+        self.action_brush_fill_no_pattern = QtWidgets.QAction(self.tr('no filling'), self)
+        self.action_brush_fill_no_pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_no_pattern)
+
+        self.action_brush_fill_dense1pattern = QtWidgets.QAction(self.tr('Extremely dense brush'), self)
+        self.action_brush_fill_dense1pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense1pattern)
+
+        self.action_brush_fill_dense2pattern = QtWidgets.QAction(self.tr('Very dense brush'), self)
+        self.action_brush_fill_dense2pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense2pattern)
+
+        self.action_brush_fill_dense3pattern = QtWidgets.QAction(self.tr('Somewhat dense brush'), self)
+        self.action_brush_fill_dense3pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense3pattern)
+
+        self.action_brush_fill_dense4pattern = QtWidgets.QAction(self.tr('Half dense brush'), self)
+        self.action_brush_fill_dense4pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense4pattern)
+
+        self.action_brush_fill_dense5pattern = QtWidgets.QAction(self.tr('Somewhat sparse brush'), self)
+        self.action_brush_fill_dense5pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense5pattern)
+
+        self.action_brush_fill_dense6pattern = QtWidgets.QAction(self.tr('Very sparse brush'), self)
+        self.action_brush_fill_dense6pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense6pattern)
+
+        self.action_brush_fill_dense7pattern = QtWidgets.QAction(self.tr('Extremely sparse brush'), self)
+        self.action_brush_fill_dense7pattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_dense7pattern)
+
+        self.action_brush_fill_horizontalpattern = QtWidgets.QAction(self.tr('Horizontal lines'), self)
+        self.action_brush_fill_horizontalpattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_horizontalpattern)
+
+        self.action_brush_fill_verticalpattern = QtWidgets.QAction(self.tr('Vertical lines'), self)
+        self.action_brush_fill_verticalpattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_verticalpattern)
+
+        self.action_brush_fill_crosspattern = QtWidgets.QAction(self.tr('Crossing horizontal and vertical lines'), self)
+        self.action_brush_fill_crosspattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_crosspattern)
+
+        self.action_brush_fill_backdiagpattern = QtWidgets.QAction(self.tr('Backward diagonal lines'), self)
+        self.action_brush_fill_backdiagpattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_backdiagpattern)
+
+        self.action_brush_fill_forwdiagpattern = QtWidgets.QAction(self.tr('Forward diagonal lines.'), self)
+        self.action_brush_fill_forwdiagpattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_forwdiagpattern)
+
+        self.action_brush_fill_crossdiagpattern = QtWidgets.QAction(self.tr('Crossing diagonal lines'), self)
+        self.action_brush_fill_crossdiagpattern.setCheckable(True)
+        self.group_style_brush.addAction(self.action_brush_fill_crossdiagpattern)
         
         self.action_font = QtWidgets.QAction(QtGui.QIcon('icons/font.png'), self.tr("Font"), self)
         
@@ -182,24 +272,44 @@ class MainWindow(QtWidgets.QMainWindow):
         menu_tools.addAction(self.action_erase)
 
         # -------- STYLE ------------
-        menu_style = menubar.addMenu(self.tr('&Style'))
-        self.menu_style_pen = menu_style.addMenu(self.tr('Pen'))
-        self.menu_style_pen.setIcon(QtGui.QIcon('icons/pen.png'))
+        self.menu_style = menubar.addMenu(self.tr('&Style'))
+        self.menu_style_pen = self.menu_style.addMenu(QtGui.QIcon('icons/pen.png'), self.tr('Pen'))
         self.menu_style_pen.addAction(self.action_pen_color)
-        self.menu_style_pen.addAction(self.action_pen_line)
+
+        menu_style_pen_line = self.menu_style_pen.addMenu(self.tr('Line style'))
+        menu_style_pen_line.addAction(self.action_pen_line_no_border)
+        menu_style_pen_line.addAction(self.action_pen_line_solidline)
+        menu_style_pen_line.addAction(self.action_pen_line_dashdotline)
+        menu_style_pen_line.addAction(self.action_pen_line_dotline)
+        menu_style_pen_line.addAction(self.action_pen_line_dashdotline)
+        menu_style_pen_line.addAction(self.action_pen_line_dashdotdotline)
+        
         self.menu_style_pen.addAction(self.action_pen_width)
         
-        menu_style_brush = menu_style.addMenu(self.tr('Brush'))
-        menu_style_brush.setIcon(QtGui.QIcon('icons/brush.png'))
+        menu_style_brush = self.menu_style.addMenu(QtGui.QIcon('icons/brush.png'), self.tr('Brush'))
         menu_style_brush.addAction(self.action_brush_color)
-        menu_style_brush.addAction(self.action_brush_fill)
-        
-        menu_style.addAction(self.action_font)
+        menu_style_brush_fill = menu_style_brush.addMenu(self.tr('Fill'))
+        menu_style_brush_fill.setIcon(QtGui.QIcon('icons/fill.png'))
+        menu_style_brush_fill.addAction(self.action_brush_fill_no_pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_solidpattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense1pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense2pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense3pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense4pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense5pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense6pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_dense7pattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_horizontalpattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_verticalpattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_crosspattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_backdiagpattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_forwdiagpattern)
+        menu_style_brush_fill.addAction(self.action_brush_fill_crossdiagpattern)
+        self.menu_style.addAction(self.action_font)
        
         # -------- OPTIONS ---------
         menu_options = menubar.addMenu(self.tr('&Options'))
-        menu_options_lang = menu_options.addMenu(self.tr("Select lang"))
-        menu_options_lang.setIcon(QtGui.QIcon('icons/select_lang.png'))
+        menu_options_lang = menu_options.addMenu(QtGui.QIcon('icons/select_lang.png'), self.tr("Select lang"))
         menu_options_lang.addAction(self.action_options_lang_en)
         menu_options_lang.addAction(self.action_options_lang_fr)
 
@@ -245,11 +355,33 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_erase.triggered.connect(lambda checked, tool="eraser": self.set_action_tool(checked, tool))
 
         self.action_pen_color.triggered.connect(self.pen_color_selection)
-        self.action_pen_line.triggered.connect(self.pen_line_selection)
+        #self.action_pen_line.triggered.connect(self.pen_line_selection)
+        self.action_pen_line_no_border.triggered.connect(lambda checked, line_style=QtCore.Qt.NoPen                 : self.pen_line_selection(checked, line_style))
+        self.action_pen_line_solidline.triggered.connect(lambda checked, line_style=QtCore.Qt.SolidLine             : self.pen_line_selection(checked, line_style))
+        self.action_pen_line_dashline.triggered.connect(lambda checked, line_style=QtCore.Qt.DashLine               : self.pen_line_selection(checked, line_style))
+        self.action_pen_line_dotline.triggered.connect(lambda checked, line_style=QtCore.Qt.DotLine                 : self.pen_line_selection(checked, line_style))
+        self.action_pen_line_dashdotline.triggered.connect(lambda checked, line_style=QtCore.Qt.DashDotLine         : self.pen_line_selection(checked, line_style))
+        self.action_pen_line_dashdotdotline.triggered.connect(lambda checked, line_style=QtCore.Qt.DashDotDotLine   : self.pen_line_selection(checked, line_style))
         self.action_pen_width.triggered.connect(self.pen_width_selection)
         
         self.action_brush_color.triggered.connect(self.brush_color_selection)
-        self.action_brush_fill.triggered.connect(self.brush_fill_selection)
+        #self.action_brush_fill.triggered.connect(self.brush_fill_selection)
+        self.action_brush_fill_no_pattern.triggered.connect(lambda checked, fill=QtCore.Qt.NoBrush          : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_solidpattern.triggered.connect(lambda checked, fill=QtCore.Qt.SolidPattern   : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense1pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense1Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense2pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense2Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense3pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense3Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense4pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense4Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense5pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense5Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense6pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense6Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_dense7pattern.triggered.connect(lambda checked, fill=QtCore.Qt.Dense7Pattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_horizontalpattern.triggered.connect(lambda checked, fill=QtCore.Qt.HorPattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_verticalpattern.triggered.connect(lambda checked, fill=QtCore.Qt.VerPattern  : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_crossdiagpattern.triggered.connect(lambda checked, fill=QtCore.Qt.CrossPattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_backdiagpattern.triggered.connect(lambda checked, fill=QtCore.Qt.BDiagPattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_forwdiagpattern.triggered.connect(lambda checked, fill=QtCore.Qt.FDiagPattern : self.brush_fill_selection(checked, fill))
+        self.action_brush_fill_crossdiagpattern.triggered.connect(lambda checked, fill=QtCore.Qt.CrossPattern : self.brush_fill_selection(checked, fill))
+
         self.action_font.triggered.connect(self.font_selection)
         
         self.action_options_lang_en.triggered.connect(lambda checked, lang="en": self.set_selected_language(checked,lang))
@@ -274,7 +406,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## FILE ------------------------------------------------
     def file_new(self):
-        print("Create new file")
         if self.scene.sceneChanged():
             title = self.tr('New ?')
             text  = self.tr("Do you want to create a new drawing without saving the old one ?")
@@ -291,19 +422,31 @@ class MainWindow(QtWidgets.QMainWindow):
         self.scene.setSceneChanged(False)
    
     def file_open(self):
-        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', os.getcwd())[0]
-        fileopen = QtCore.QFile(filename)
-        if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text):
+        file = QtWidgets.QFileDialog.getOpenFileName(self, 'Open File', os.getcwd(), "JSON files (*.json);; SVG files (*.svg)")
+        filename, file_extention = file
+        if file_extention == "SVG files (*.svg)":
+            fileopen = QtCore.QFile(filename)
+            if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text):
+                self.scene.clear()
+                self.scene.setSceneChanged(False)
+                svgReader = SvgReader()
+
+                #self.scene.setSceneRect(svgReader.getSize(fileopen))
+                for element in svgReader.getElements(fileopen):
+                    self.scene.addItem(element)
+                fileopen.close()
+                self.srcfile = file
+                
+        if file_extention == "JSON files (*.json)":
+            fileopen = QtCore.QFile(filename)
             self.scene.clear()
             self.scene.setSceneChanged(False)
-            svgReader = SvgReader()
-
-            #self.scene.setSceneRect(svgReader.getSize(fileopen))
-            for element in svgReader.getElements(fileopen):
-                self.scene.addItem(element)
-
-            fileopen.close()
-            self.srcfile = filename
+            if fileopen.open(QtCore.QFile.ReadOnly | QtCore.QFile.Text):
+                s = SaveOpen()
+                for element in s.open(fileopen):
+                    self.scene.addItem(element)
+                fileopen.close()
+                self.srcfile = file
 
 
     def file_save(self):
@@ -312,53 +455,73 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             self.file_save_as()
             
-    def save(self, filename):
-        filesave = QtCore.QFile(filename)
-        if filesave.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.ReadOnly):
-
-            generator = QtSvg.QSvgGenerator()
-            generator.setFileName(filename)
-            generator.setTitle("Simply Paint")
-            generator.setDescription("Filed created by Simply Paint.")
-            generator.setSize(QtCore.QSize(self.scene.width(), self.scene.height()))
-            generator.setViewBox(QtCore.QRect(0, 0, self.scene.width(), self.scene.height()))
+    def save(self, file):
+        filename, file_extention = file
+        if file_extention == "SVG files (*.svg)":
+            title = self.tr('Save in this format ?')
+            text  = self.tr("If you save in this format, only certain properties will be retained (such as shapes and colors, not line and fill styles)")
+            msgbox = QtWidgets.QMessageBox(QtWidgets.QMessageBox.Question, title, text)
+            msgbox.setWindowIcon(self.windowIcon())
+            no_button = msgbox.addButton(self.tr('No'), QtWidgets.QMessageBox.NoRole)
+            yes_button= msgbox.addButton(self.tr('Yes'), QtWidgets.QMessageBox.YesRole)
+            msgbox.setDefaultButton(no_button)
+            msgbox.exec()
             
-            painter = QtGui.QPainter()
-            painter.begin(generator)
-            self.scene.render(painter)
-            painter.end()
+            if (msgbox.clickedButton() == yes_button):
+                filesave = QtCore.QFile(filename)
+                filesave.resize(0)
+                if filesave.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.ReadOnly):
+
+                    generator = QtSvg.QSvgGenerator()
+                    generator.setFileName(filename)
+                    generator.setTitle("Simply Paint")
+                    generator.setDescription("Filed created by Simply Paint.")
+                    generator.setSize(QtCore.QSize(self.scene.width(), self.scene.height()))
+                    generator.setViewBox(QtCore.QRect(0, 0, self.scene.width(), self.scene.height()))
+                    
+                    painter = QtGui.QPainter()
+                    painter.begin(generator)
+                    self.scene.render(painter)
+                    painter.end()
+                    
+                    doc = QtXml.QDomDocument()
+                    doc.setContent(filesave)
+                    filesave.close()
+                
+                filesave = QtCore.QFile(filename)
+                fileStream = QtCore.QTextStream(filesave)
+                if filesave.open(QtCore.QIODevice.WriteOnly):
+                    SVGNode = doc.lastChild()
+                    boardNode = SVGNode.lastChild()
+                    groupFormNodeList = boardNode.childNodes()
+
+                    count = groupFormNodeList.length()
+                    for i in range(count):
+                        groupFormNode = groupFormNodeList.item(count-i-1)
+                        if not groupFormNode.hasChildNodes():
+                            boardNode.removeChild(groupFormNode)
+                    
+                    groupFormNodeList = boardNode.childNodes()
+
+                    doc.save(fileStream, 2)
+                    filesave.close()
+                    
+                    self.srcfile = file
+                    self.scene.setSceneChanged(False)
+
+        if file_extention == "JSON files (*.json)":
+            filesave = QtCore.QFile(filename)
+            filesave.resize(0)
+            if filesave.open(QtCore.QIODevice.WriteOnly | QtCore.QIODevice.ReadOnly):
+                s = SaveOpen()
+                s.save(filesave, self.scene.items())
+                filesave.close()
+                self.srcfile = file
             
-            doc = QtXml.QDomDocument()
-            doc.setContent(filesave)
-            filesave.close()
-        
-
-
-        filesave = QtCore.QFile(filename)
-        fileStream = QtCore.QTextStream(filesave)
-        if filesave.open(QtCore.QIODevice.WriteOnly):
-            SVGNode = doc.lastChild()
-            boardNode = SVGNode.lastChild()
-            groupFormNodeList = boardNode.childNodes()
-
-            count = groupFormNodeList.length()
-            for i in range(count):
-                groupFormNode = groupFormNodeList.item(count-i-1)
-                if not groupFormNode.hasChildNodes():
-                    boardNode.removeChild(groupFormNode)
-            
-            groupFormNodeList = boardNode.childNodes()
-
-            doc.save(fileStream, 2)
-            filesave.close()
-            
-            self.srcfile = filename
-            self.scene.setSceneChanged(False)
     
     def file_save_as(self):
-        print("Sauvegarder sous")
-        filename = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), "SVG files (*.svg)")[0]
-        self.save(filename)
+        file = QtWidgets.QFileDialog.getSaveFileName(self, self.tr('Save File'), os.getcwd(), "JSON files (*.json);; SVG files (*.svg)")
+        self.save(file)
 
     def file_exit(self):
         if self.scene.sceneChanged():
@@ -380,7 +543,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     ## TOOLS ------------------------------------------------
     def set_action_tool(self,checked, tool) :
-        print("lamda checked, tool : ",checked, tool)
         self.scene.set_tool(tool)
 
 
@@ -391,33 +553,31 @@ class MainWindow(QtWidgets.QMainWindow):
         color = QtWidgets.QColorDialog.getColor(QtCore.Qt.yellow, self )
         if color.isValid() :
             self.scene.set_pen_color(color)
-            print("Color Choosen : ",color.name())
-        else :
-            print("color is not a valid one !")
             
-    def pen_line_selection(self):
-        print("pen_line_selection")
+    def pen_line_selection(self, checked, line_style):
+        self.scene.set_pen_line_style(line_style)
     
     def pen_width_selection(self):
-        print("pen_width_selection")
-
-
+        pen_width = self.scene.get_pen_width()
+        pen_width, ok = QtWidgets.QInputDialog.getInt(self, "Pen width selection", "pen width", pen_width, 0, 100, flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        if ok:
+            self.scene.set_pen_width(pen_width)
     # BRUSH
     def brush_color_selection(self):
         color = QtWidgets.QColorDialog.getColor(QtCore.Qt.yellow, self )
         if color.isValid() :
             self.scene.set_brush_color(color)
-            print("Color Choosen : ",color.name())
-        else :
-            print("color is not a valid one !")
         
-    def brush_fill_selection(self):
-        print("brush_fill_selection")
+    def brush_fill_selection(self, checked, fill):
+        self.scene.set_brush_style(fill)
     
     
     # FONT
     def font_selection(self):
-        print("font_selection")
+        font = self.scene.get_font()
+        font, ok = QtWidgets.QFontDialog.getFont(self)
+        if ok:
+            self.scene.set_font(font)
        
     
     ## OPTIONS ---------------------------------------------
@@ -427,7 +587,6 @@ class MainWindow(QtWidgets.QMainWindow):
         translate.load(QtCore.QLocale(lang), 'lang', '.', 'lang', '.qm')
         app.installTranslator(translate)
         self.settings.set_selected_language(QtCore.QLocale(lang).bcp47Name())
-        print("new lang " + lang)
         
     ## HELP ------------------------------------------------
     def help_about_us(self):
@@ -449,7 +608,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if (msgbox.clickedButton() == copie_button):
             app = QtWidgets.QApplication.instance()
             app.clipboard().setText(text)
-
     
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:

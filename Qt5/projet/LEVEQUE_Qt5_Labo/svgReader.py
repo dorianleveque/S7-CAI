@@ -141,9 +141,13 @@ class SvgReader():
                     int(rectElementItem.attribute("width")),
                     int(rectElementItem.attribute("height"))
                 )
+                fillColor = QtGui.QColor(self.__getAttributes(rectElementItem, 'fill', '#ffffff'))
+                fillColor.setAlphaF(float(self.__getAttributes(rectElementItem, 'fill-opacity', '0')))
+                brush   = QtGui.QBrush(fillColor)
 
-                brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(rectElementItem, 'fill', '#ffffff')))
-                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(rectElementItem, 'stroke', '#000000')))
+                strokeColor = QtGui.QColor(self.__getAttributes(rectElementItem, 'stroke', '#000000'))
+                strokeColor.setAlphaF(float(self.__getAttributes(rectElementItem, 'stroke-opacity', '1')))
+                pen     = QtGui.QPen(strokeColor)
                 pen.setWidth(int(self.__getAttributes(rectElementItem, 'stroke-width', '1')))
 
                 self.__applyAllTransforms(graphicsRectItem, self.__getTransforms(rectElementItem))
@@ -169,8 +173,14 @@ class SvgReader():
                 ry = float(ellipseElementItem.attribute("ry"))
                 graphicsEllipseItem = QtWidgets.QGraphicsEllipseItem(cx-rx, cy-ry, rx*2.0, ry*2.0)
 
-                brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(ellipseElementItem, 'fill', '#ffffff')))
-                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(ellipseElementItem, 'stroke', '#000000')))
+
+                fillColor = QtGui.QColor(self.__getAttributes(ellipseElementItem, 'fill', '#ffffff'))
+                fillColor.setAlphaF(float(self.__getAttributes(ellipseElementItem, 'fill-opacity', '0')))
+                brush   = QtGui.QBrush(fillColor)
+
+                strokeColor = QtGui.QColor(self.__getAttributes(ellipseElementItem, 'stroke', '#000000'))
+                strokeColor.setAlphaF(float(self.__getAttributes(ellipseElementItem, 'stroke-opacity', '1')))
+                pen     = QtGui.QPen(strokeColor)
                 pen.setWidth(int(self.__getAttributes(ellipseElementItem, 'stroke-width', '1')))
 
                 self.__applyAllTransforms(graphicsEllipseItem, self.__getTransforms(ellipseElementItem))
@@ -195,8 +205,13 @@ class SvgReader():
                 r  = float(circleElementItem.attribute("r"))
                 graphicsCircleItem = QtWidgets.QGraphicsEllipseItem(cx-r, cy-r, r*2.0, r*2.0)
 
-                brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(circleElementItem, 'fill', '#ffffff')))
-                pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(circleElementItem, 'stroke', '#000000')))
+                fillColor = QtGui.QColor(self.__getAttributes(circleElementItem, 'fill', '#ffffff'))
+                fillColor.setAlphaF(float(self.__getAttributes(circleElementItem, 'fill-opacity', '0')))
+                brush   = QtGui.QBrush(fillColor)
+
+                strokeColor = QtGui.QColor(self.__getAttributes(circleElementItem, 'stroke', '#000000'))
+                strokeColor.setAlphaF(float(self.__getAttributes(circleElementItem, 'stroke-opacity', '1')))
+                pen     = QtGui.QPen(strokeColor)
                 pen.setWidth(int(self.__getAttributes(circleElementItem, 'stroke-width', '1')))
 
                 self.__applyAllTransforms(graphicsCircleItem, self.__getTransforms(circleElementItem))
@@ -228,8 +243,11 @@ class SvgReader():
                     line = QtCore.QLineF(graphicsPoints[0], graphicsPoints[1])
                     graphicsLineItem = QtWidgets.QGraphicsLineItem(line)
                     
-                    pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(lineElementItem, 'stroke', '#000000')))
+                    strokeColor = QtGui.QColor(self.__getAttributes(lineElementItem, 'stroke', '#000000'))
+                    strokeColor.setAlphaF(float(self.__getAttributes(lineElementItem, 'stroke-opacity', '1')))
+                    pen     = QtGui.QPen(strokeColor)
                     pen.setWidth(int(self.__getAttributes(lineElementItem, 'stroke-width', '1')))
+
                     self.__applyAllTransforms(graphicsLineItem, self.__getTransforms(lineElementItem))
                     
                     graphicsLineItem.setPen(pen)
@@ -265,9 +283,15 @@ class SvgReader():
                     polygon = QtGui.QPolygonF(graphicsPoints)
                     graphicsPolyItem = QtWidgets.QGraphicsPolygonItem(polygon)
 
-                    brush   = QtGui.QBrush(QtGui.QColor(self.__getAttributes(polyElementItem, 'fill', '#ffffff')))
-                    pen     = QtGui.QPen(QtGui.QColor(self.__getAttributes(polyElementItem, 'stroke', '#000000')))
+                    fillColor = QtGui.QColor(self.__getAttributes(polyElementItem, 'fill', '#ffffff'))
+                    fillColor.setAlphaF(float(self.__getAttributes(polyElementItem, 'fill-opacity', '0')))
+                    brush   = QtGui.QBrush(fillColor)
+
+                    strokeColor = QtGui.QColor(self.__getAttributes(polyElementItem, 'stroke', '#000000'))
+                    strokeColor.setAlphaF(float(self.__getAttributes(polyElementItem, 'stroke-opacity', '1')))
+                    pen     = QtGui.QPen(strokeColor)
                     pen.setWidth(int(self.__getAttributes(polyElementItem, 'stroke-width', '1')))
+
                     self.__applyAllTransforms(graphicsPolyItem, self.__getTransforms(polyElementItem))
                     
                     graphicsPolyItem.setPen(pen)
@@ -275,6 +299,40 @@ class SvgReader():
                     polygonGraphicsList.append(graphicsPolyItem)
         return polygonGraphicsList
         
+    def __getTexts(self, docDOM):
+        textGraphicsList = []
+
+        SVGNode = docDOM.elementsByTagName('svg')
+        if len(SVGNode)>0:
+            SVGNodeElement = SVGNode.at(0).toElement()
+            textNodeList = SVGNodeElement.elementsByTagName('text')
+
+            for i in range(textNodeList.size()):
+                textElementItem = textNodeList.item(i).toElement()
+                x = float(textElementItem.attribute("x"))
+                y = float(textElementItem.attribute("y"))
+                text = textElementItem.text()
+                graphicsTextItem = QtWidgets.QGraphicsTextItem(text)
+                graphicsTextItem.setX(x)
+                graphicsTextItem.setY(y)
+                font = QtGui.QFont()
+                font.setFamily(self.__getAttributes(textElementItem, 'font-family'))
+                font.setWeight(int(self.__getAttributes(textElementItem, 'font-weight')))
+                font.setPointSize(float(self.__getAttributes(textElementItem, 'font-size')))
+                style = self.__getAttributes(textElementItem, 'font-style')
+                if style == 'normal':
+                    style = QtGui.QFont.StyleNormal
+                elif style == 'italic':
+                    style = QtGui.QFont.StyleItalic
+                elif style == 'oblique':
+                    style = QtGui.QFont.StyleOblique
+                font.setStyle(style)
+                graphicsTextItem.setFont(font)
+
+                self.__applyAllTransforms(graphicsTextItem, self.__getTransforms(textElementItem))
+                textGraphicsList.append(graphicsTextItem)
+        return textGraphicsList
+
 
     def getElements(self, fileopen):        
         doc = QtXml.QDomDocument()
@@ -286,8 +344,9 @@ class SvgReader():
         circles = self.__getCircles(doc)
         lines = self.__getLines(doc)
         polygons = self.__getPolygons(doc)
+        texts = self.__getTexts(doc)
 
-        return rectangles + ellipses + circles + lines + polygons
+        return rectangles + ellipses + circles + lines + polygons + texts
         
     def getSize(self, fileopen):
         doc = QtXml.QDomDocument()

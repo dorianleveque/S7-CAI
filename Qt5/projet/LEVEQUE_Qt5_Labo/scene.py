@@ -9,6 +9,7 @@ class Scene (QtWidgets.QGraphicsScene) :
         QtWidgets.QGraphicsScene.__init__(self)
         self.parent = parent
         self.tool = 'pointer'
+        self.font = self.font()
         self.__scene_changed = False
         self.begin,self.end,self.offset=QtCore.QPoint(0,0),QtCore.QPoint(0,0),QtCore.QPoint(0,0)
         self.item_maintained = None
@@ -24,30 +25,15 @@ class Scene (QtWidgets.QGraphicsScene) :
         # pen init
         self.pen = QtGui.QPen()
         self.pen.setColor(QtCore.Qt.red)
-        self.pen.setWidth(3)
+        self.pen.setWidth(2)
         ## brush init
-        self.brush = QtGui.QBrush(QtCore.Qt.green)
-        self.brush.setColor(QtCore.Qt.blue)
-
+        self.brush = QtGui.QBrush(QtCore.Qt.blue)
 
         self.pen_shape = QtGui.QPen(QtGui.QColor(0, 0, 0, 150))
         self.pen_shape.setWidth(2)
         self.pen_shape.setStyle(QtCore.Qt.DashLine)
 
         self.brush_shape = QtGui.QBrush(QtGui.QColor(0, 0, 0, 50))
-        poly = QtGui.QPolygonF([
-            QtCore.QPointF(0, 0),QtCore.QPointF(0, 20),QtCore.QPointF(20, 20),QtCore.QPointF(20, 0)
-        ])
-        self.addPolygon(poly, self.pen, self.brush)
-        self.addText("Hello World")
-        lineEdit = QtWidgets.QLineEdit()
-        self.addWidget(lineEdit)
-        #rect = QtWidgets.QGraphicsRectItem(-482,-231,338,161)
-        #rect.setPen(self.pen)
-        #rect.setBrush(self.brush)
-        #rect.setTransform(QtGui.QTransform().rotate(20))
-        ## self.setBackgroundBrush(QtGui.QColor(255, 255, 50, 127))
-        #self.addItem(rect)
         
     def sceneChanged(self):
         return self.__scene_changed
@@ -56,7 +42,6 @@ class Scene (QtWidgets.QGraphicsScene) :
         self.__scene_changed = s
 
     def set_tool(self,tool) :
-        print("set_tool(self,tool)",tool)
         self.tool=tool
         self.item_maintained = None
         if isinstance(self.item_shape, QtWidgets.QGraphicsPathItem):
@@ -66,11 +51,26 @@ class Scene (QtWidgets.QGraphicsScene) :
     def set_pen_color(self,color) :
         self.pen.setColor(color)
 
+    def set_pen_line_style(self, style):
+        self.pen.setStyle(style)
+
+    def get_pen_width(self):
+        return self.pen.width()
+
+    def set_pen_width(self, width):
+        self.pen.setWidth(width)
+
+    def set_font(self, font):
+        self.font = font
+
+    def get_font(self):
+        return self.font
+
     def set_brush_color(self,color) :
-       print("set_brush_color(self,color)",color)
-       self.color_brush=color
+       self.brush.setColor(color)
  
-    
+    def set_brush_style(self, style):
+        self.brush.setStyle(style)
     
     # ------ EVENTS -----------------------------
 
@@ -87,10 +87,9 @@ class Scene (QtWidgets.QGraphicsScene) :
             self.ctrl_key_pressed = False
 
     def contextMenuEvent(self, event):
-        self.parent.menu_style_pen.exec(QtGui.QCursor.pos())
+        self.parent.menu_style.exec(QtGui.QCursor.pos())
 
     def mousePressEvent(self, event):
-        print("Scene.mousePressEvent()")
         self.begin = self.end = event.scenePos()
         self.item_maintained = self.itemAt(self.begin,QtGui.QTransform())
 
@@ -150,17 +149,14 @@ class Scene (QtWidgets.QGraphicsScene) :
             if self.poly_shape and self.item_shape:
                 self.poly_painter.setElementPositionAt(self.poly_painter.elementCount()-1, self.end.x(), self.end.y())
                 self.item_shape.setPath(self.poly_painter)
-                print(self.poly_painter.currentPosition().x(), self.poly_painter.currentPosition().y(), self.poly_painter.elementCount())
-
+                
         self.update()
         
 
     def mouseReleaseEvent(self, event):
-        print("Scene.mouseReleaseEvent()",self.tool)
         self.end = event.scenePos()
         self.mouse_pressed = False
         if self.tool == "pointer":
-            print(" item_maintained ")
             if self.item_maintained :
                 self.item_maintained.setPos(event.scenePos() - self.offset)
                 self.item_maintained = None
@@ -183,7 +179,6 @@ class Scene (QtWidgets.QGraphicsScene) :
                 self.poly_painter = QtGui.QPainterPath(QtCore.QPointF(self.end.x(), self.end.y()))
                 self.item_shape = self.addPath(self.poly_painter, self.pen_shape, self.brush_shape)
 
-            print("\nRELEASE")
             if self.poly_painter.elementCount() > 2:
                 x0  = self.poly_painter.elementAt(0).x
                 y0  = self.poly_painter.elementAt(0).y
@@ -191,7 +186,6 @@ class Scene (QtWidgets.QGraphicsScene) :
                 y   = self.poly_painter.elementAt(self.poly_painter.elementCount()-1).y
                 #if self.poly_painter.contains(QtCore.QPointF(x,y)):
                 if (x0 > (x-10) and x0 < (x+10) and y0 > (y-10) and y < (y+10)):
-                    print("POLYGONE")
                     self.poly_shape = False
                     self.poly_painter.setElementPositionAt(self.poly_painter.elementCount()-1, x0, y0)
                     self.item_shape.setPath(self.poly_painter)
@@ -200,7 +194,6 @@ class Scene (QtWidgets.QGraphicsScene) :
                     for i in range(self.poly_painter.elementCount()):
                         point = self.poly_painter.elementAt(i)
                         points.append(QtCore.QPointF(point.x, point.y))
-                    print(points)
                     polygon = QtGui.QPolygonF(points)
                     self.removeItem(self.item_shape)
                     self.addPolygon(polygon, self.pen, self.brush)
@@ -213,7 +206,14 @@ class Scene (QtWidgets.QGraphicsScene) :
                 self.poly_painter.lineTo(self.end.x()+1, self.end.y()+1)
                 self.item_shape.setPath(self.poly_painter)
            
-            print(self.poly_painter.currentPosition().x(), self.poly_painter.currentPosition().y(), self.poly_painter.elementCount())
+        elif self.tool == "text":
+            text, ok = QtWidgets.QInputDialog.getText(QtWidgets.QWidget(), "Insert text", "text", flags=QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+            if ok:
+                text = QtWidgets.QGraphicsTextItem(text)
+                text.setPos(self.end.x(), self.end.y())
+                text.setFont(self.font)
+                self.addItem(text)
+        
         else :
             print("no item_maintained selected and nothing to draw !")
         self.update()
