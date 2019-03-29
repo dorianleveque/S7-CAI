@@ -14,6 +14,10 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMainWindow.__init__(self)
         self.settings = Settings("MySoft", "Simply Paint")
         self.srcfile = None    # Current file for save option
+        # init language 
+        lang = self.settings.get_selected_language()
+        locale = lang if (lang) else 'en'
+        self.set_selected_language(True, locale)
         self.resize(600, 450)
         self.setWindowTitle("Simply Paint v0.1")
         self.setWindowIcon(QtGui.QIcon("./icons/simplyPaint.ico"))
@@ -23,10 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.connect_actions()
         self.create_toolbar()
 
-        # init language 
-        lang = self.settings.get_selected_language()
-        locale = lang if (lang) else 'en'
-        self.set_selected_language(True, locale)
+
 
 ##        textEdit = QtGui.QTextEdit()
 ##        self.setCentralWidget(textEdit)
