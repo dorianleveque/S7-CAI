@@ -1,5 +1,4 @@
 package com.example.myapplication;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,23 +7,21 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener, View.OnTouchListener {
+import com.example.myapplication.assets.SpaceShip;
 
-    final String TAG="sensor";
+public class App extends AppCompatActivity implements SensorEventListener, View.OnTouchListener {
+
+    final String TAG="App";
     SensorManager mSensorManager;
     private Sensor mAccelerometer;
-    private Sensor mGyroscope;
-    private  MySurfaceView view;
+    public SpaceShip spaceShip = null;
     private LinearLayout canvasLayout = null;
-    MySurfaceView customSurfaceView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +30,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(mSensorManager == null) {
             mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         }
-        if(view == null){
-            view = new MySurfaceView(this);
-        }
-
-        mGyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        // on créé notre spaceShip
+        spaceShip = new SpaceShip(getApplicationContext());
 
-        canvasLayout = (LinearLayout) findViewById(R.id.customViewLayout);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        customSurfaceView = new MySurfaceView(getApplicationContext());
-        customSurfaceView.setOnTouchListener(this);
-        canvasLayout.addView(customSurfaceView);
+        // on place ajoute notre spaceShip à notre app layout
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        canvasLayout = findViewById(R.id.appViewLayout);
+        canvasLayout.addView(this.spaceShip);
     }
 
     @Override
@@ -52,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         if(mSensorManager != null){
             mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_NORMAL);
-            mSensorManager.registerListener(this,mGyroscope,SensorManager.SENSOR_DELAY_NORMAL);
-
         }
     }
 
@@ -64,12 +55,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             float Ay = event.values[1];
             float Az = event.values[2];
             Log.v(TAG, String.format("TimeAcc = %s | Ax = %s Ay = %s Az = %s", event.timestamp, Ax, Ay, Az));
-        }
-        if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE){
-            float Gx = event.values[0];
-            float Gy = event.values[1];
-            float Gz = event.values[2];
-            Log.v(TAG, String.format("TimeAcc = %s | Gx = %s Gy = %s Gz = %s", event.timestamp, Gx, Gy, Gz));
+            spaceShip.posx  = spaceShip.posx - 2 *Ax ;
+            spaceShip.posy = spaceShip.posy + 2 *Ay ;
+            spaceShip.draw(spaceShip.posx,spaceShip.posy);
         }
     }
 
@@ -80,13 +68,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        return false;
         // If user touch the custom SurfaceView object.
-        if(view instanceof SurfaceView) {
+       /* if(view instanceof SurfaceView) {
 
             // Create and set a red paint to custom surfaceview.
             float x = event.getX();
             float y = event.getY();
-            customSurfaceView.drawRedBall(x,y);
+
 
             // Tell android os the onTouch event has been processed.
             return true;
@@ -94,6 +83,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         {
             // Tell android os the onTouch event has not been processed.
             return false;
-        }
+        }*/
     }
 }
