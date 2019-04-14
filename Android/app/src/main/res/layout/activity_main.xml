@@ -13,10 +13,25 @@
 
     <include layout="@layout/content_main" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/appViewLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"></LinearLayout>
+        android:background="@drawable/space">
+
+        <ImageView
+            android:id="@+id/spaceShipView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="56dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/spaceShipSprite"
+            android:saveEnabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/space_ship" />
+    </FrameLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

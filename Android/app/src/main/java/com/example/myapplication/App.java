@@ -5,12 +5,15 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.myapplication.assets.SpaceShip;
@@ -21,7 +24,7 @@ public class App extends AppCompatActivity implements SensorEventListener, View.
     SensorManager mSensorManager;
     private Sensor mAccelerometer;
     public SpaceShip spaceShip = null;
-    private LinearLayout canvasLayout = null;
+    private FrameLayout canvasLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class App extends AppCompatActivity implements SensorEventListener, View.
     protected void onResume(){
         super.onResume();
         if(mSensorManager != null){
-            mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+            mSensorManager.registerListener(this,mAccelerometer,SensorManager.SENSOR_DELAY_FASTEST);
         }
     }
 
@@ -55,9 +58,9 @@ public class App extends AppCompatActivity implements SensorEventListener, View.
             float Ay = event.values[1];
             float Az = event.values[2];
             Log.v(TAG, String.format("TimeAcc = %s | Ax = %s Ay = %s Az = %s", event.timestamp, Ax, Ay, Az));
-            spaceShip.posx  = spaceShip.posx - 2 *Ax ;
-            spaceShip.posy = spaceShip.posy + 2 *Ay ;
-            spaceShip.draw(spaceShip.posx,spaceShip.posy);
+
+            ImageView spaceShipView = findViewById(R.id.spaceShipView);
+            spaceShip.draw(spaceShipView, Ax,Ay);
         }
     }
 

@@ -13,8 +13,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -31,8 +33,8 @@ public class SpaceShip extends SurfaceView implements SensorEventListener, Surfa
     private SurfaceHolder surfaceHolder = null;
     private int width = 300;
     private int height = 300;
-    public float posx = 300;
-    public float posy = 300;
+    private float posx = 300;
+    private float posy = 300;
 
     public SpaceShip(Context context) {
         super(context);
@@ -44,27 +46,28 @@ public class SpaceShip extends SurfaceView implements SensorEventListener, Surfa
             // Add this as surfaceHolder callback object.
             surfaceHolder.addCallback(this);
         }
-        this.setBackgroundResource(R.drawable.space);
+        //this.setBackgroundResource(R.drawable.space);
         this.setZOrderOnTop(true);
         this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
     }
 
-    public void draw(float x, float y) {
+    public void draw(ImageView spaceShipView, float x, float y) {
         // Get and lock canvas object from surfaceHolder.
 
-        Canvas canvas = surfaceHolder.lockCanvas();
-        if (canvas!=null){
+        if (spaceShipView != null) {
+            posx = posx - 2 * x;
+            posy = posy + 2 * y;
 
-            Paint paint = new Paint();
-            paint.setColor(Color.RED);
-            canvas.drawCircle(x , y, 100, paint);
-
-            Drawable shipSprite = ContextCompat.getDrawable(getContext(), R.drawable.spaceship);
-            shipSprite.setBounds(round(x),round(y),round(x)+width,round(y)+height);
-            shipSprite.draw(canvas);
-
-            // Unlock the canvas object and post the new draw.
-            surfaceHolder.unlockCanvasAndPost(canvas);
+            spaceShipView.setTranslationX(posx);
+            spaceShipView.setTranslationY(posy);
+            double s = 0.4; // sensor sensitivity
+            if ((x>-s) && (x<s)) {
+                spaceShipView.setScaleX(1);
+            }
+            else {
+                double t = cos(x*0.2);
+                spaceShipView.setScaleX((x > 0) ? ((float) t) : ((float) -t));
+            }
         }
     }
 
