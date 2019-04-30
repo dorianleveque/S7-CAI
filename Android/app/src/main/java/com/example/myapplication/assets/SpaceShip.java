@@ -1,5 +1,6 @@
 package com.example.myapplication.assets;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -17,11 +18,16 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.myapplication.R;
 import com.example.myapplication.tmp.MySurfaceView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.*;
 
@@ -35,6 +41,7 @@ public class SpaceShip extends SurfaceView implements SensorEventListener, Surfa
     private int height = 300;
     private float posx = 300;
     private float posy = 300;
+    private List<ImageView> rocketList = new ArrayList();
 
     public SpaceShip(Context context) {
         super(context);
@@ -51,12 +58,25 @@ public class SpaceShip extends SurfaceView implements SensorEventListener, Surfa
         this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
     }
 
-    public void draw(ImageView spaceShipView, float x, float y) {
+    public void move(ImageView spaceShipView, float x, float y, float maxx, float maxy) {
         // Get and lock canvas object from surfaceHolder.
 
         if (spaceShipView != null) {
             posx = posx - 2 * x;
             posy = posy + 2 * y;
+
+            if (posx<-300){
+                posx=maxx-300;
+            }
+            if (posx>maxx-300){
+                posx=-300;
+            }
+            if (posy<-300){
+                posy=maxy+300;
+            }
+            if (posy>maxy+300){
+                posy=-300;
+            }
 
             spaceShipView.setTranslationX(posx);
             spaceShipView.setTranslationY(posy);
@@ -69,6 +89,44 @@ public class SpaceShip extends SurfaceView implements SensorEventListener, Surfa
                 spaceShipView.setScaleX((x > 0) ? ((float) t) : ((float) -t));
             }
         }
+    }
+    public void drawRotate(ImageView spaceShipView, float x, float y) {
+        // Get and lock canvas object from surfaceHolder.
+
+        if (spaceShipView != null) {
+            float angle = (float) Math.toDegrees(Math.atan2(y - posy-300, x - posx-300))+90;
+
+            if(angle < 0){
+                angle += 360;
+            }
+            spaceShipView.setRotation(angle);
+
+        }
+    }
+
+    public ImageView shoot() {
+        ImageView rocketImage = new ImageView(this.getContext());
+        ViewGroup.LayoutParams params = new ActionBar.LayoutParams(400, 400);
+        rocketImage.setLayoutParams(params);
+        rocketImage.setBackgroundResource(R.drawable.rocket);
+        this.rocketList.add(rocketImage);
+        return rocketImage;
+    }
+
+    public float getPosX() {
+        return posx;
+    }
+
+    public float getPosY() {
+        return posy;
+    }
+
+    public int width() {
+        return width;
+    }
+
+    public int height() {
+        return height;
     }
 
     @Override
