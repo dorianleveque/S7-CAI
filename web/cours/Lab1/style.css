@@ -2,19 +2,24 @@ body {
     margin: 0;
     padding: 0;
     /*background: radial-gradient(circle, rgba(20,130,111,1) 0%, rgba(49,231,206,1) 0%, rgba(20,130,111,1) 100%);*/
-    background: linear-gradient(180deg, rgba(26,138,123,1) 0%, rgba(38,190,168,1) 25%, rgba(45,211,189,1) 50%, rgba(39,190,168,1) 75%, rgba(21,126,109,1) 100%);
+    /*background: linear-gradient(180deg, rgba(26,138,123,1) 0%, rgba(38,190,168,1) 25%, rgba(45,211,189,1) 50%, rgba(39,190,168,1) 75%, rgba(21,126,109,1) 100%); */
 }
 
-#container {
+#stand-background {
+    background: radial-gradient(circle, rgba(70,255,255,1) 30vh, rgba(19,129,110,1) 92vh);
+    height: 100vh;
+}
+
+#stand-foreground {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url("assets/sadida_stand.png") no-repeat center/70vh;
+    background: url("assets/sadida_stand_v2.png") no-repeat center/70vh;
     --cube-size: 18vh;
 }
 
-#container.no-background {
+#stand-foreground.no-foreground {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,8 +41,8 @@ body {
     position: absolute;
     width: var(--cube-size);
     height: var(--cube-size);
-    background: url("assets/eliacube.png") center/100% no-repeat;
-    border-radius: 8px;
+    background: url("assets/eliacube.png") center/100% 100% no-repeat;
+    border-radius: 2px;
 }
 
 #front {
