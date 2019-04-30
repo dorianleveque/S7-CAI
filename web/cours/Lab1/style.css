@@ -17,7 +17,7 @@ body {
     width: 200px;
     transform-style: preserve-3d;
     transform-origin: 50% 50%;
-    animation: rotation 3s cubic-bezier(.6,.1,.39,.94) infinite;
+    animation: sphere 20s cubic-bezier(.6,-0.31,.27,1.55) infinite;
 }
 
 .face {
@@ -62,5 +62,19 @@ body {
 
     to {
         transform: rotateX(360deg) rotateY(360deg);
+    }
+}
+
+@keyframes sphere { 
+    0% {
+        transform: rotateY(0deg) rotateZ(0deg) rotateX(0deg);
+        top: 50%; 
+    }
+    50% {
+        top: 30%;
+    }
+    100% {
+        transform: rotateY(360deg) rotateZ(360deg) rotateX(360deg);
+        top: 50%;
     }
 }
