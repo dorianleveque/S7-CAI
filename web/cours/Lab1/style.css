@@ -1,0 +1,66 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.cube {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+    animation: rotation 3s cubic-bezier(.6,.1,.39,.94) infinite;
+}
+
+.face {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background-image: url("assets/eliacube.png");
+    border-radius: 8px;
+}
+
+#front {
+    transform: translateZ(100px);
+}
+
+#back {
+    transform: translateZ(-100px) rotateY(180deg);
+}
+
+#top {
+    transform: rotateX(90deg) translateZ(100px);
+}
+
+#bottom {
+    transform: rotateX(90deg) translateZ(-100px);
+}
+
+#left {
+    transform: rotateY(90deg) translateZ(-100px);
+}
+
+#right {
+    transform: rotateY(90deg) translateZ(100px);
+}
+
+/****************
+    Animation
+****************/
+@keyframes rotation {
+    from {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+
+    to {
+        transform: rotateX(360deg) rotateY(360deg);
+    }
+}
