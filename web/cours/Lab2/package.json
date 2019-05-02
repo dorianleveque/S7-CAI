@@ -1,0 +1,7 @@
+{
+    "name": "Lab2",
+    "main": "server.js",
+    "devDependencies": {
+        "express": "^4.16.4"
+    }
+}

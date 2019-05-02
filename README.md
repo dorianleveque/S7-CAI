@@ -14,7 +14,7 @@ Ce semestre était axé sur la découverte de conception d'IHM (Interface Humain
 Voici une courte présentation des différents projets dispo sur le depôt. 
 
 <div align="center">
-    <img src="TkInter/projet/LEVEQUE-Oscilloscope/icons/logo.png" alt="drawing" width="200px;"/>
+    <img src="TkInter/projet/LEVEQUE-Oscilloscope/icons/logo.png" alt="oscilloscope" width="200px;"/>
     <h1>
         <b style="color:#3E4751">
             Osciloscope
@@ -22,12 +22,12 @@ Voici une courte présentation des différents projets dispo sur le depôt.
     </h1>
 </div>
 
-> Cette application permettait de nous introduire la méthode MVC ainsi que les IHM à l'aide de TkInter.     
+> Cette application permettait de nous introduire la méthode MVC ainsi que les IHM à l'aide de __TkInter__.     
 Il s'agissait d'une petite application qui devait afficher plusieurs courbes dans un graphique. Chaque courbe étaient modifiable via des curseurs.     
 On pouvait ensuite sauvegarder nos différentes courbes (sauvegarder le projet) pour pouvoir y revenir plus tard.
 
 <div align="center">
-    <img src="Qt5/projet/LEVEQUE_Qt5_Labo/icons/simplyPaint.png" alt="drawing" width="200px;"/>
+    <img src="Qt5/projet/LEVEQUE_Qt5_Labo/icons/simplyPaint.png" alt="simply paint" width="200px;"/>
     <h1>
         <b style="color:#FF3800">
             Simply Paint
@@ -37,4 +37,23 @@ On pouvait ensuite sauvegarder nos différentes courbes (sauvegarder le projet) 
 </div>
 
 > Une courte application graphique permettant de créer facilement et rapidement un dessin. Il est possible dans cet éditeur de pouvoir modifier à chaque instant l'ensemble des figures (dimension, couleur, ...).  
-L'application est réalisé avec la bibliothèque de Qt à l'aide de PyQt5.
+L'application est réalisé avec la bibliothèque de __Qt__ à l'aide de __PyQt5__.
+
+
+<div align="center">
+    <img src="web/cours/Lab1/assets/wakfu.png" alt="wakfu" width="200px;"/>
+    <h1>
+        <b style="color:rgba(38,190,168,1)">
+            Eliacube Animation
+        </b>
+    </h1>
+    <h3>The famous animation of the artefact named "Eliacube" in Wakfu animation series !</h3>
+</div>
+
+
+<div align="center">
+    <img src="web/cours/Lab1/assets/eliacube_result.gif" alt="my animation"/>
+</div>
+
+> Une simple animation web d'un cube en 3D pour pratiquer les transformations et animations web en 3D.
+Utilisation des languages suivant: __HTML__ et __CSS__.

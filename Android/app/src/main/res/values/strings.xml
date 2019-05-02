@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Galaxy Wars</string>
+    <string name="action_settings">Settings</string>
+    <string name="spaceShipSprite">spaceShipSprite</string>
+    <string name="score">Lux:</string>
+    <string name="title_activity_game_activity">game_activity</string>
+    <string name="play">Play</string>
+    <string name="quit">Quit</string>
+    <string name="gameover">Gameover</string>
+    <string name="retry">Retry</string>
+</resources>

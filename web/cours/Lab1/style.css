@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    padding: 0;
+    /*background: radial-gradient(circle, rgba(20,130,111,1) 0%, rgba(49,231,206,1) 0%, rgba(20,130,111,1) 100%);*/
+    /*background: linear-gradient(180deg, rgba(26,138,123,1) 0%, rgba(38,190,168,1) 25%, rgba(45,211,189,1) 50%, rgba(39,190,168,1) 75%, rgba(21,126,109,1) 100%); */
+}
+
+#stand-background {
+    background: radial-gradient(circle, rgba(70,255,255,1) 30vh, rgba(19,129,110,1) 92vh);
+    height: 100vh;
+}
+
+#stand-foreground {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url("assets/sadida_stand_v2.png") no-repeat center/70vh;
+    --cube-size: 16vh;
+}
+
+#stand-foreground.no-foreground {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: none;
+    --cube-size: 200px;
+}
+
+/*#stand-foreground::after {
+    content: '';
+    position: absolute;
+    width: calc(2*var(--cube-size));
+    height: calc(2*var(--cube-size));
+    background: radial-gradient(circle, rgba(63,255,255,0.2) 25%, rgba(69,255,255,0) 100%);
+    border-radius: 100%;
+    animation: overlay 20s cubic-bezier(.6,-0.31,.27,1.55) infinite;
+}*/
+
+.cube {
+    position: absolute;
+    height: var(--cube-size);
+    width: var(--cube-size);
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+    animation: sphere 20s cubic-bezier(.6,-0.31,.27,1.55) infinite;
+}
+
+.face {
+    position: absolute;
+    width: var(--cube-size);
+    height: var(--cube-size);
+    background: url("assets/eliacube.png") center/100% 100% no-repeat;
+    border-radius: 2px;
+    animation: brightness 20s cubic-bezier(.6,-0.31,.27,1.55) infinite;
+}
+
+#front {
+    transform: translateZ(calc(var(--cube-size)/2));
+}
+
+#back {
+    transform: translateZ(calc(-1*var(--cube-size)/2)) rotateY(180deg);
+}
+
+#top {
+    transform: rotateX(90deg) translateZ(calc(var(--cube-size)/2));
+}
+
+#bottom {
+    transform: rotateX(90deg) translateZ(calc(-1*var(--cube-size)/2));
+}
+
+#left {
+    transform: rotateY(90deg) translateZ(calc(-1*var(--cube-size)/2));
+}
+
+#right {
+    transform: rotateY(90deg) translateZ(calc(var(--cube-size)/2));
+}
+
+/****************
+    Animation
+****************/
+@keyframes rotation {
+    from {
+        transform: rotateX(0deg) rotateY(0deg);
+    }
+
+    to {
+        transform: rotateX(360deg) rotateY(360deg);
+    }
+}
+
+@keyframes sphere { 
+    0% {
+        transform: rotateY(0deg) rotateZ(0deg) rotateX(0deg);
+        top: 40%; 
+    }
+    50% {
+        top: 25%;
+    }
+    100% {
+        transform: rotateY(360deg) rotateZ(360deg) rotateX(360deg);
+        top: 40%;
+    }
+}
+
+@keyframes overlay {
+    0% {
+        top: 30%; 
+    }
+    50% {
+        top: 15%;
+    }
+    100% {
+        top: 30%;
+    }
+}
+
+@keyframes brightness {
+    0% {
+        filter: brightness(1); 
+    }
+    25%{
+        filter: brightness(1.4); 
+    }    
+    50% {
+        filter: brightness(1.55); 
+    }    
+    75% {
+        filter: brightness(1.2); 
+    }
+    100% {
+        filter: brightness(1); 
+    }
+}
