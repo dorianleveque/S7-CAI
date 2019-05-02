@@ -14,7 +14,7 @@ Ce semestre était axé sur la découverte de conception d'IHM (Interface Humain
 Voici une courte présentation des différents projets dispo sur le depôt. 
 
 <div align="center">
-    <img src="TkInter/projet/LEVEQUE-Oscilloscope/icons/logo.png" alt="drawing" width="200px;"/>
+    <img src="TkInter/projet/LEVEQUE-Oscilloscope/icons/logo.png" alt="oscilloscope" width="200px;"/>
     <h1>
         <b style="color:#3E4751">
             Osciloscope
@@ -27,7 +27,7 @@ Il s'agissait d'une petite application qui devait afficher plusieurs courbes dan
 On pouvait ensuite sauvegarder nos différentes courbes (sauvegarder le projet) pour pouvoir y revenir plus tard.
 
 <div align="center">
-    <img src="Qt5/projet/LEVEQUE_Qt5_Labo/icons/simplyPaint.png" alt="drawing" width="200px;"/>
+    <img src="Qt5/projet/LEVEQUE_Qt5_Labo/icons/simplyPaint.png" alt="simply paint" width="200px;"/>
     <h1>
         <b style="color:#FF3800">
             Simply Paint
@@ -41,7 +41,7 @@ L'application est réalisé avec la bibliothèque de __Qt__ à l'aide de __PyQt5
 
 
 <div align="center">
-    <img src="web/cours/Lab1/assets/wakfu.ico" alt="drawing" width="200px;"/>
+    <img src="web/cours/Lab1/assets/wakfu.png" alt="wakfu" width="200px;"/>
     <h1>
         <b style="color:rgba(38,190,168,1)">
             Eliacube Animation
@@ -52,7 +52,7 @@ L'application est réalisé avec la bibliothèque de __Qt__ à l'aide de __PyQt5
 
 
 <div align="center">
-    <img src="web/cours/Lab1/assets/eliacube_result.gif" alt="drawing"/>
+    <img src="web/cours/Lab1/assets/eliacube_result.gif" alt="my animation"/>
 </div>
 
 > Une simple animation web d'un cube en 3D pour pratiquer les transformations et animations web en 3D.
