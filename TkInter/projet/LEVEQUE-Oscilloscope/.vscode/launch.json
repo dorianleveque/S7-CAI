@@ -8,7 +8,7 @@
             "name": "Python: Final Program",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/LEVEQUE-Oscilloscope/oscilloscope.py",
+            "program": "${workspaceFolder}/oscilloscope.py",
             "console": "integratedTerminal"
         },
         {

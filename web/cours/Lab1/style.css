@@ -1,8 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-    /*background: radial-gradient(circle, rgba(20,130,111,1) 0%, rgba(49,231,206,1) 0%, rgba(20,130,111,1) 100%);*/
-    /*background: linear-gradient(180deg, rgba(26,138,123,1) 0%, rgba(38,190,168,1) 25%, rgba(45,211,189,1) 50%, rgba(39,190,168,1) 75%, rgba(21,126,109,1) 100%); */
 }
 
 #stand-background {
@@ -17,6 +15,7 @@ body {
     height: 100vh;
     background: url("assets/sadida_stand_v2.png") no-repeat center/70vh;
     --cube-size: 16vh;
+    --light-cube-size: 12vh;
 }
 
 #stand-foreground.no-foreground {
@@ -27,16 +26,6 @@ body {
     background: none;
     --cube-size: 200px;
 }
-
-/*#stand-foreground::after {
-    content: '';
-    position: absolute;
-    width: calc(2*var(--cube-size));
-    height: calc(2*var(--cube-size));
-    background: radial-gradient(circle, rgba(63,255,255,0.2) 25%, rgba(69,255,255,0) 100%);
-    border-radius: 100%;
-    animation: overlay 20s cubic-bezier(.6,-0.31,.27,1.55) infinite;
-}*/
 
 .cube {
     position: absolute;
@@ -56,28 +45,64 @@ body {
     animation: brightness 20s cubic-bezier(.6,-0.31,.27,1.55) infinite;
 }
 
+#stand-control {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    padding: 10px;
+}
+
+#stand-control button {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+#stand-control i {
+    font-size: 30px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
 #front {
     transform: translateZ(calc(var(--cube-size)/2));
+    /*background: none*/
 }
+/*#front::after {
+    content: '';
+    position: absolute;
+    background-color: white;
+    width: var(--light-cube-size);
+    height: var(--light-cube-size);
+    transform: translateX(20px);
+}*/
 
 #back {
     transform: translateZ(calc(-1*var(--cube-size)/2)) rotateY(180deg);
+    /*background: none;*/
 }
 
 #top {
     transform: rotateX(90deg) translateZ(calc(var(--cube-size)/2));
+    /*background: none;*/
 }
 
 #bottom {
     transform: rotateX(90deg) translateZ(calc(-1*var(--cube-size)/2));
+    /*background: none;*/
 }
 
 #left {
     transform: rotateY(90deg) translateZ(calc(-1*var(--cube-size)/2));
+    /*background: none;*/
 }
 
 #right {
     transform: rotateY(90deg) translateZ(calc(var(--cube-size)/2));
+    /*background: none;*/
 }
 
 /****************
